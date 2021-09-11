@@ -144,6 +144,7 @@ button {
 
 .flex {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .flex-row {
@@ -223,8 +224,9 @@ button {
 	text-align: right;
 }
 
-.fa {
-	font-size: 18px !important;
+fa-icon {
+	//font-size: 16px !important;
+	margin-right: 2px;
 }
 
 #user button,.card button {
@@ -260,48 +262,46 @@ button {
 
 .card-container {
 	flex:  33%;
-	padding: 10px;
+	max-width: 33%;
+	padding: 20px 10px;
+
+	a {
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		/*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.4);*/
+		transition:  0.3s;
+
+		&:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 7px 10px 0 rgba(0,0,0,0.4);
+		}
+	}
+
+	&:nth-child(3n+1) {
+		padding-left:  0;
+	}
+
+	&:nth-child(2n+1) {
+		padding-right:  0;
+	}
 }
 
-.card-container a {
-	display: block;
-	width: 100%;
-	height: 100%;
-	position: relative;
-	/*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.4);*/
-	transition:  0.3s;
-}
 .card {
 	background-color: white;
 	border-radius: 10px;
 	/*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.4);*/
 	padding: 10px;
 	transition: 0.3s;
-}
 
-.card-container:first-child {
-	padding-left:  0;
-}
-
-.card-container:last-child {
-	padding-right:  0;
-}
-
-/*.card:hover{
-	transform: translateY(-10px);
-	box-shadow: 0 7px 10px 0 rgba(0,0,0,0.4);
-}*/
-
-.card-container a:hover {transform: translateY(-10px);
-	box-shadow: 0 7px 10px 0 rgba(0,0,0,0.4);
+	img {
+		width: 100%;
+	}
 }
 
 .img-container {
 	height: 250px;
-}
-
-.card img {
-	width: 100%;
 }
 
 .product-info {
@@ -351,102 +351,99 @@ button {
 #product-details {
 	background-color: white;
 	padding: 10px 50px;
-}
 
-#product-details > div {
-	margin-bottom:  15px;
-}
+	> div {
+		margin-bottom:  15px;
+	}
 
-#product-details .price {
-	font-size: 30px;
-}
+	.price {
+		font-size: 30px;
+	}
 
-#product-details .circle {
-	position: relative;
-	background-color: #197FDE;
-	border-radius: 50%;
-	cursor:  pointer;
-	width:  40px;
-	height: 40px;
-}
+	.circle {
+		position: relative;
+		background-color: #197FDE;
+		border-radius: 50%;
+		cursor:  pointer;
+		width:  40px;
+		height: 40px;
 
-#product-details .circle:hover,#product-details .circle.active {
-	border: 2px solid;
-}
+		&:hover,&.active{
+			border: 2px solid;
+		}
 
-#product-details .circle:not(:first-child) {
-	margin:  0 5px;
-}
+		&:not(:first-child) {
+			margin:  0 5px;
+		}
+	}
 
-#product-details .color {
-	background-color: #197FDE;
-}
+	.color {
+		background-color: #197FDE;
+	}
 
-#product-details .size-container {
-	background-color: #ddd;
-}
+	.size-container {
+		background-color: #ddd;
+	}
 
-#product-details .size{
-	position: absolute;
-	top:  50%;
-	left:  50%;
-	transform:  translate(-50%,-50%);
-	font-weight: bold;
-}
+	.size{
+		position: absolute;
+		top:  50%;
+		left:  50%;
+		transform:  translate(-50%,-50%);
+		font-weight: bold;
 
-#product-details .size.sold-out::before {
-	content: "";
-	position: absolute;
-	top:  50%;
-	left:  50%;
-	transform:  translate(-50%,-50%) rotate(45deg);
-	background-color: black;
-	width: 1px;
-	height: 40px;
-}
+		&.sold-out::before {
+			content: "";
+			position: absolute;
+			top:  50%;
+			left:  50%;
+			transform:  translate(-50%,-50%) rotate(45deg);
+			background-color: black;
+			width: 1px;
+			height: 40px;
+		}
+	}
 
-#product-details #availability {
-	color:  red;
-}
+	#availability {
+		color:  red;
 
-#product-details #availability.available {
-	color:  #4caf50;
-}
+		&.available {
+			color:  #4caf50;
+		}
+	}
 
-#product-details input {
-	background-color: #333;
-	color: white;
-	padding: 10px;
-	width: 50px;
-}
+	input {
+		background-color: #333;
+		color: white;
+		padding: 10px;
+		width: 50px;
+	}
 
-#product-details button {
-	width: 200px;
-	color:  white;
-	font-size:  18px;
-	font-weight: bold;
-	background-image: linear-gradient(to right,#1FDFF6,#206FFF,#8613C1);
+	button {
+		width: 200px;
+		color:  white;
+		font-size:  18px;
+		font-weight: bold;
+		background-image: linear-gradient(to right,#1FDFF6,#206FFF,#8613C1);
+	}
 }
 
 .name {
 	font-weight: bold;
 }
 
-#newsletter .fa {
-	padding-left:  0;
-	font-size:  14px !important;
-}
+#newsletter {
+	input {
+		padding: 10px;
+		width: 75%;
+	}
 
-#newsletter input {
-	padding: 10px;
-	width: 75%;
-}
-
-#newsletter button {
-	background-color: #4caf50;
-	color:  white;
-	padding: 10px;
-	width: 25%;
+	button {
+		background-color: #4caf50;
+		color:  white;
+		padding: 10px;
+		width: 25%;
+	}
 }
 
 #newsletter-box {

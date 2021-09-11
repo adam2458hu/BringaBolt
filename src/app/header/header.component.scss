@@ -38,6 +38,16 @@ header {
 	position: relative;
 	cursor: pointer;
 	padding: 8px 10px;
+
+	&:last-child .sub-nav {
+		position: absolute;
+		left:  initial;
+		right: 0;
+	}
+
+	&:hover .sub-nav {
+		display: block;
+	}
 }
 
 .sub-nav {
@@ -49,40 +59,34 @@ header {
 	box-shadow: 0 5px 5px rgba(0,0,0,0.4);
 	width: 300px;
 	z-index: 9999;
-}
 
-.main-nav li:last-child .sub-nav {
-	position: absolute;
-	left:  initial;
-	right: 0;
-}
+	li {
+		position: relative;
+		padding-bottom: 5px;
 
-.sub-nav li{
-	position: relative;
-	padding-bottom: 5px;
-}
+		a {
+			display: block;
+		}
+		
+		&:not(:last-child) {
+			border-bottom: 1px solid #ddd;
+		}
 
-.sub-nav li:not(:last-child) {
-	border-bottom: 1px solid #ddd;
-}
+		&:hover {
+			border: 1px solid #F29818;
+			margin-top:  -1px;
+			padding-left: 9px;
 
-.main-nav li:hover .sub-nav {
-	display: block;
-}
-
-.sub-nav li:hover {
-	border: 1px solid #F29818;
-	margin-top:  -1px;
-	padding-left: 9px;
-}
-
-.sub-nav li:hover::before {
-	content:  "";
-	position: absolute;
-	top: 50%;
-	left:  0;
-	transform: translate(-100%,-50%);
-	width: 12px;
-	height: calc(100% + 2px);
-	background-color: #F29818;
+			&::before {
+				content:  "";
+				position: absolute;
+				top: 50%;
+				left:  0;
+				transform: translate(-100%,-50%);
+				width: 12px;
+				height: calc(100% + 2px);
+				background-color: #F29818;
+			}
+		}
+	}
 }

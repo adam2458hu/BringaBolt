@@ -1,11 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductComponent } from './product/product.component';
+import { ProductsComponent } from './products/products.component'
+import { ProductDetailsComponent } from './product-details/product-details.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
-    path: 'product/:id',component: ProductComponent
+    path: 'products/:category/:subcategory',component: ProductsComponent
+  },
+  {
+    path: 'products/:category',component: ProductsComponent
+  },
+  {
+    path: ':slug',component: ProductDetailsComponent
+  },
+  {
+    path: '',redirectTo: '/products/bikes',pathMatch: 'full'
   },
   {
     path: '404',component: PageNotFoundComponent

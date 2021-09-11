@@ -1,0 +1,21 @@
+<div *ngIf="productsReceived" class="flex justify-content-between main-container">
+	<ng-container *ngIf="products && products.length>0;else noProductsInThisCategory" >
+		<div *ngFor="let product of products;index as i" class="card-container">
+		<a href="./{{ product.slug }}">
+			<div class="card-background"></div>
+			<div class="card text-center">
+				<div class="img-container">
+					<img src="{{ product.image }}" alt="Cube Litening">
+				</div>
+				<div class="product-info flex justify-content-between">
+					<div class="name">{{ product.name }}</div>
+					<div class="price">{{ product.price }}</div>
+				</div>
+			</div>
+		</a>
+	</div>
+	</ng-container>
+	<ng-template #noProductsInThisCategory>
+		<h2>Jelenleg nincsenek termékek ebben a kategóriában.</h2>
+	</ng-template>
+</div>

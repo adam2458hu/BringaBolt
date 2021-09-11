@@ -1,19 +1,19 @@
-<div id="product-container" class="main-container">
+<div *ngIf="productDetailsReceived" id="product-container" class="main-container">
 	<div id="product-background"></div>
 	<div id="product" class="flex justify-content-between main-container">
 		<div class="flex-50">
-			<img id="product-image" src="" alt="" width="100%">
+			<img id="product-image" src="{{ product.image }}" alt="{{ product.name }}" width="100%">
 		</div>
 		<div class="flex-50">
 			<div id="product-details">
 				<div>
-					<div id="product-name" class="name"></div>
-					<div id="product-price" class="price"></div>
+					<div id="product-name" class="name">{{ product.name }}</div>
+					<div id="product-price" class="price">{{ product.price }}</div>
 				</div>
 				<div>
-					<div><i class="fa fa-truck fa-fw"></i>Ingyenes szállítás</div>
-					<div><i class="fa fa-wrench fa-fw"></i>Díjmentes üzembe helyezés</div>
-					<div><i class="fa fa-money fa-fw"></i>Pénzvisszafizetési garancia</div>
+					<div><fa-icon [fixedWidth]="true" [icon]="faTruck"></fa-icon>Ingyenes szállítás</div>
+					<div><fa-icon [fixedWidth]="true" [icon]="faWrench"></fa-icon>Díjmentes üzembe helyezés</div>
+					<div><fa-icon [fixedWidth]="true" [icon]="faMoneyBillWave"></fa-icon>Pénzvisszafizetési garancia</div>
 				</div>
 				<div class="flex flex-column">
 					<div><b>Szín:</b></div>
