@@ -1,0 +1,318 @@
+@import '../../variables';
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+
+	tr {
+		td,th {
+			border: 1px solid black;
+			//width: 50%;
+			padding: 5px;
+		}
+	}
+
+	thead {
+		tr {
+		}
+	}
+
+	tbody {
+		th {
+			text-align: right;
+		}
+	}
+}
+
+#progress-bar {
+	position: relative;
+	padding: 10px;
+	border-radius: 20px;
+	background-color: #ddd;
+	//width: calc(100% - var(--progress-step-width));
+	width: 800px;
+	margin: 50px auto 30px;
+
+	/* erre azért van szükség, hogy csak a haladási sáv túlcsordulását rejtse el,
+	és a lépésszámláló négyzetekét ne */
+	#container-to-hide-overflow {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+
+		#progress {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			padding: 10px;
+			border-radius: 20px;
+			//background-image: linear-gradient(to right,$color-blue 66.6%,#ddd 83.25%);
+			background-color: $color-green;
+			//background-image: linear-gradient(to right,$color-blue 0 66.6%,#ddd 66.6% 99.9%);
+			transform: translateX(var(--progress-bar-current-offset));
+			z-index: 997;
+
+			&.progress-animation {
+				animation: progress-animation var(--progress-bar-animation-duration) forwards linear;
+			}
+		}
+	}
+
+	.step {
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%,-50%);
+		width: var(--progress-step-width);
+		height: var(--progress-step-width);
+		background-color: white;
+		border-radius: 50%;
+		border: 2px solid white;
+		z-index: 998;
+
+		&:nth-child(1) {
+			left: 0%;
+		}
+
+		&:nth-child(2) {
+			left: 33.3%;
+		}
+
+		&:nth-child(3) {
+			left: 66.6%;
+		}
+
+		&:nth-child(4) {
+			left: 100%;
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 1px;
+			left: 1px;
+			background-color: #ddd;
+			border-radius: 50%;
+			width: calc(100% - 2px);
+			height: calc(100% - 2px);
+			transition: var(--progress-bar-animation-duration);
+		}
+
+		&.active::before {
+			background-color: #555;
+			//box-shadow: 0 0 10px $color-green;
+		}
+
+		&.completed::before {
+			background-color: $color-green;
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			background-color: white;
+			border-radius: 50%;
+			width: calc(100% - 10px);
+			height: calc(100% - 10px);
+		}
+
+		.step-number,.step-icon {
+			visibility: hidden;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			font-weight: bolder;
+			font-size: 20px;
+			z-index: 999;
+			transition: var(--progress-bar-animation-duration);
+		}
+
+		.step-number.visible,.step-icon.visible {
+			visibility: visible;
+		}
+
+		.step-number {
+			transform: translate(-50%,-50%) scale(1);
+		}
+
+		.step-icon {
+			transform: translate(-50%,-50%) scale(0);
+			transition: 0.1s;
+		}
+
+		&.completed .step-number {
+			transform: translate(-50%,-50%) scale(0);
+			transition: 0.1s;
+		}
+
+		&.completed .step-icon {
+			color: $color-green;
+			transform: translate(-50%,-50%) scale(1);
+			transition: var(--progress-bar-animation-duration);
+		}
+
+		.step-title {
+			position: absolute;
+			top: -30px;
+			left: 50%;
+			transform: translateX(-50%);
+			-webkit-filter: blur(0.000001px);
+			//-webkit-font-smoothing: antialiased;
+			font-family: 'Exo';
+			font-weight: 200;
+			white-space: nowrap;
+			transition: 0.5s color, 0.5s font-weight;
+		}
+
+		&.active .step-title {
+			font-weight: 700;
+			transform: translateX(-50%);
+		}
+
+		&.completed .step-title {
+			font-weight: 700;
+			color: $color-green;
+		}
+	}
+}
+
+#checkout {
+	//margin: 50px auto 0;
+
+	form {
+		background-color: white;
+		border-radius: 10px;
+		padding: 20px;
+		overflow: hidden;
+
+		input[type="text"] {
+			background-color: #ddd;
+			border-radius: 4px;
+			padding: 10px;
+			margin: 5px 0;
+			width: 100%;
+		}
+
+		h2 {
+			position: relative;
+			background-color: $color-blue;
+			color: white;
+			text-align: center;
+			overflow: hidden;
+		}
+
+		button {
+		}
+
+		.page {
+			//animation: fadeIn 0.5s;
+		}
+
+		.paper-body {
+			background-color: #f1f1f1;
+			padding: 10px;
+
+			.flex-33 {
+				padding: 5px;
+			}
+
+			label {
+				position: relative;
+				display: block;
+				cursor: pointer;
+				background-color: white;
+				width: 100%;
+				height: 100%;
+				padding: 10px;
+				user-select: none;
+				overflow: hidden;
+
+				.label-decoration {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+				}
+
+				&:hover .label-decoration,input:checked + .label-decoration {
+					box-shadow: inset 0 0 10px 5px $color-green;
+				}
+
+				input:checked + .label-decoration::after {
+					content: '';
+					position: absolute;
+					top: 0;
+					right: 0;
+					width: 30%;
+					height: 30%;
+					background-color: $color-green;
+					transform: translate(50%,-50%) rotate(45deg); 
+					z-index: 998;
+				}
+
+				/*&.active::before {
+					content: '\2713';
+					position: absolute;
+					top: 2px;
+					right: 5px;
+					color: white;
+					z-index: 999;
+				}*/
+
+				.img-container{
+					height: 100px;
+					align-items: center;
+					margin-bottom: 5px;
+
+					fa-icon {
+						font-size: 50px;
+					}
+				}
+
+				.payment-info {
+					font-size: 14px;
+					text-align: center;
+				}
+
+				input {
+					position: absolute;
+					height: 0;
+					opacity: 0;
+				}
+
+				img {
+					width: 100%;
+				}
+
+				fa-icon {
+					font-size: 30px;
+
+					&#money-bill-icon {
+						color: $color-green;
+					}
+
+					&#bank-icon {
+						color: #333;
+					}
+
+					&#store-icon {
+						color: $color-yellow;
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes progress-animation {
+	0%{transform: translateX(var(--progress-bar-current-offset));}
+   100%{transform: translateX(var(--progress-bar-target-offset));}
+}

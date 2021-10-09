@@ -1,0 +1,6 @@
+<ng-container *ngIf="cartItemCount;else cartIsEmpty">
+	<app-cart-item-list></app-cart-item-list>
+</ng-container>
+<ng-template #cartIsEmpty>
+	<div class="text-center">A kosár jelenleg üres.</div>
+</ng-template>

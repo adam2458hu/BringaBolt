@@ -1,0 +1,97 @@
+@import '../../../variables';
+
+header {
+	background-color: white;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.4);
+	padding: 10px 25px 0;
+
+	h1 {
+		font-family: 'Kaushan Script', cursive;
+		font-size: 30px;
+
+		span {
+			color: $color-blue;
+		}
+	}
+
+	#user {
+		position: relative;
+	}
+
+	#icon {
+		height: 50px;
+	}
+
+	app-search-results {
+		position: relative;
+		width: 100%;
+	}
+
+	.main-nav li{
+		position: relative;
+		cursor: pointer;
+
+		&:last-child .sub-nav {
+			position: absolute;
+			left:  initial;
+			right: 0;
+		}
+
+		&:hover .sub-nav {
+			display: block;
+		}
+
+		a {
+			display: block;
+			padding: 8px 10px;
+
+			&.active {
+				font-weight: bold;
+			}
+		}
+
+		.sub-nav {
+			display: none;
+			position: absolute;
+			top:  100%;
+			left:  0;
+			box-shadow: 0 5px 5px rgba(0,0,0,0.4);
+			width: 300px;
+			z-index: 9999;
+
+			li {
+				position: relative;
+
+				a {
+					display: block;
+					background-color: #f1f1f1;
+					padding-bottom: 5px;
+
+					&:hover {
+						border: 1px solid $color-yellow;
+						border-width: 1px 1px 1px 0;
+						margin-top:  -1px;
+						padding-bottom: 4px;
+						padding-left: 10px;
+
+						&::before {
+							content:  "";
+							position: absolute;
+							top: 50%;
+							left:  0;
+							transform: translate(-100%,-50%);
+							width: 12px;
+							//height: calc(100% + 2px);
+							height: 100%;
+							background-color: $color-yellow;
+						}
+					}
+				}
+				
+				&:not(:last-child) {
+					border-bottom: 1px solid #ddd;
+				}
+			}
+		}
+	}
+}

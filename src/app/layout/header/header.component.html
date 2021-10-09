@@ -1,0 +1,51 @@
+<header>
+	<div class="main-container">
+		<div class="flex align-items-center mb-10">
+			<a [routerLink]="['/']" class="flex flex-20" id="icon-container">
+					<img id="icon" src="{{ 'iconImagesPath' | env}}/biker_transparent.png" alt="icon">
+					<h1><span>B</span>ringa <span>B</span>olt</h1>
+			</a>
+			<div class="flex flex-50 justify-content-center">
+				<app-search-results></app-search-results>
+			</div>
+			<div class="flex flex-20 justify-content-end" id="user">
+				<button id="login" class="btn btn-yellow mr-10"><fa-icon [fixedWidth]="true" [icon]="faSignInAlt"></fa-icon>Belépés</button>
+				<app-cart-preview></app-cart-preview>
+			</div>
+		</div>
+		<hr>
+		<nav>
+			<ul class="main-nav flex justify-content-between">
+				<li><a [routerLink]="['/products/bikes']" routerLinkActive="active">Kerékpár<fa-icon [fixedWidth]="true" [icon]="faCaretDown"></fa-icon></a>
+					<ul class="sub-nav">
+						<li><a [routerLink]="['/products/bikes/road']" routerLinkActive="active">Országúti</a></li>
+						<li><a [routerLink]="['/products/bikes/mtb']" routerLinkActive="active">MTB</a></li>
+						<li><a [routerLink]="['/products/bikes/kid']" routerLinkActive="active">Gyerek</a></li>
+					</ul>
+				</li>
+				<li><a [routerLink]="['/products/parts']" routerLinkActive="active">Alkatrész<fa-icon [fixedWidth]="true" [icon]="faCaretDown"></fa-icon></a>
+					<ul class="sub-nav">
+						<li><a [routerLink]="['/products/parts/tires']" routerLinkActive="active">Külső gumi</a></li>
+						<li><a [routerLink]="['/products/parts/chains']" routerLinkActive="active">Lánc</a></li>
+					</ul>
+				</li>
+				<li><a [routerLink]="['/products/accessories']" routerLinkActive="active">Kiegészítő<fa-icon [fixedWidth]="true" [icon]="faCaretDown"></fa-icon></a>
+					<ul class="sub-nav">
+						<li><a [routerLink]="['/products/accessories/lights']" routerLinkActive="active">Lámpa</a></li>
+						<li><a [routerLink]="['/products/accessories/locks']" routerLinkActive="active">Lakat</a></li>
+						<li><a [routerLink]="['/products/accessories/pumps']" routerLinkActive="active">Pumpa</a></li>
+						<li><a [routerLink]="['/products/accessories/bags']" routerLinkActive="active">Táska</a></li>
+						<li><a [routerLink]="['/products/accessories/transport']" routerLinkActive="active">Szállítás</a></li>
+					</ul>
+				</li>
+				<li><a [routerLink]="['/products/clothing']" routerLinkActive="active">Ruházat<fa-icon [fixedWidth]="true" [icon]="faCaretDown"></fa-icon></a>
+					<ul class="sub-nav">
+						<li><a [routerLink]="['/products/clothing/helmets']" routerLinkActive="active">Sisak</a></li>
+						<li><a [routerLink]="['/products/clothing/jerseys']" routerLinkActive="active">Mez</a></li>
+						<li><a [routerLink]="['/products/clothing/shorts']" routerLinkActive="active">Nadrág</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>

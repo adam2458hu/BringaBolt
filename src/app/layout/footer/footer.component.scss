@@ -1,0 +1,33 @@
+@import '../../../variables';
+
+footer {
+	background-color: #111;
+	color:  white;
+	font-size:  12px;
+	padding: 20px;
+	margin-top: auto;
+
+	a {
+		color: white;
+	}
+
+	#newsletter {
+		input {
+			padding: 10px;
+			width: 75%;
+		}
+
+		button {
+			border-radius: 0;
+			color:  white;
+			font-weight: bolder;
+			font-size: 14px;
+			padding: 10px;
+			width: 25%;
+		}
+	}
+
+	#newsletter-box {
+		width: 100%;
+	}
+}

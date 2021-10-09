@@ -1,0 +1,19 @@
+<div *ngIf="productImageViewer.opened" id="modal" #modal class="flex justify-content-center align-items-center">
+	<span id="close" (click)="close()">&times;</span>
+	<div id="modal-content" #modalContent>
+		<div *ngIf="productImageViewer.mode==='default'" #productImageViewerDefault class="product-image-viewer img-container align-items-center">
+			<img id="product-image" #productImage src="{{ productImageViewer.product | getProductImages : productImageViewer.product.selectedColor : productImageViewer.currentIndex}}" alt="" (loaded)="initMagnifierGlass()">
+			<button id="previous" (click)="moveSlide(-1)">&lt;</button>
+			<button id="next" (click)="moveSlide(1)">&gt;</button>
+			<div id="slide-counter">
+			</div>
+			<div id="slide-counter-text">{{productImageViewer.currentIndex+1}} / {{productImageViewer.product.images['default'][productImageViewer.product.selectedColor].length}}</div>
+			<div #magnifierGlass id="magnifier-glass">
+				<div id="magnifier-glass-multiplier">{{ magnifierMultiplier }}x</div>
+			</div>
+		</div>
+		<div *ngIf="productImageViewer.mode==='360degree'" #productImageViewer360 id="product-image-viewer-360" class="product-image-viewer img-container align-items-center">
+			<img #product360 id="product360degree" src="{{ productImageViewer.product | getProductImages : productImageViewer.product.selectedColor : productImageViewer.currentIndex : '360degree'}}" alt="">
+		</div>
+	</div>
+</div>

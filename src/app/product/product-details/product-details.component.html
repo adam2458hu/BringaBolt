@@ -1,0 +1,61 @@
+<div *ngIf="productDetailsReceived" id="product-container">
+	<div id="product-background"></div>
+	<div id="product" class="flex justify-content-between">
+		<div class="flex flex-50 img-container align-items-center justify-content-center">
+			<img *ngIf="product.images['360degree'] && product.images['360degree'][product.selectedColor]" src="{{ 'iconImagesPath' | env }}/360-degree-icon.jpg" alt="360 degree product viewer" id="product-viewer-icon" (click)="openProductImageViewer('360degree')">
+			<img id="product-image" src="{{ product | getProductImages: product.selectedColor }}" alt="{{ product.name }}" width="100%" (click)="openProductImageViewer('default')">
+		</div>
+		<div id="product-details" class="flex-50 align-items-center">
+			<div>
+				<div id="product-name" class="name">{{ product.name }}</div>
+				<div id="product-price" class="price">{{ product.price | number | pointReplacer }} Ft</div>
+			</div>
+			<div>
+				<div><fa-icon [fixedWidth]="true" [icon]="faTruck"></fa-icon>
+					<ng-container *ngIf="product.categories.includes('bikes');else shippingFee">Ingyenes szállítás
+					</ng-container>
+					<ng-template #shippingFee>Szállítási díj: 990 Ft</ng-template>
+				</div>
+				<div *ngIf="product.categories.includes('bikes')"><fa-icon [fixedWidth]="true" [icon]="faWrench"></fa-icon>Díjmentes üzembe helyezés</div>
+				<div><fa-icon [fixedWidth]="true" [icon]="faMoneyBillWave"></fa-icon>Pénzvisszafizetési garancia</div>
+			</div>
+			<div>
+				<div><b>Szín:</b></div>
+				<div id="colors" class="flex">
+					<div *ngFor="let color of product.availableColors" class="circle" [ngClass]="{'active':product.selectedColor==color}" [ngStyle]="{backgroundColor: color}" (click)="selectColor(color)" title="{{ color }}"></div>
+				</div>
+			</div>
+			<div>
+				<div><b>Méret:</b></div>
+				<div id="sizes" class="flex">
+					<div *ngFor="let size of product.availableSizes" class="rectangle" [ngClass]="{'active':product.selectedSize==size,'sold-out':!product.productsInStock || !product.productsInStock[product.selectedColor] || !product.productsInStock[product.selectedColor][size]}" (click)="selectSize(size)">{{ size }}
+					</div>
+				</div>
+			</div>
+			<div>
+				<b>Elérhetőség: 
+					<span id="availability" [ngClass]="{'available':product.stockQuantity>0}">
+						<span *ngIf="product.stockQuantity>0;else notInStock">
+							Raktáron {{ product.stockQuantity }} db
+						</span>
+						<ng-template #notInStock>
+							Nincs készleten
+						</ng-template>
+					</span>
+				</b>
+			</div>
+			<div id="add-to-cart-block" #addToCartBlock>
+				<input #orderQuantity type="number" value="1" min="1" (change)="selectQuantity()" (keyup.enter)="addToCart()">
+				<button (click)="addToCart()" class="btn btn-blue" (mousedown)="shrinkAddToCartBlock(true)" (mouseup)="shrinkAddToCartBlock(false)" (mouseleave)="shrinkAddToCartBlock(false)">
+					<span *ngIf="product.stockQuantity>0;else preOrder">
+						Kosárba
+					</span>
+					<ng-template #preOrder>
+						Előrendelés
+					</ng-template>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<app-product-image-viewer></app-product-image-viewer>

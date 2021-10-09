@@ -1,0 +1,35 @@
+<div *ngIf="productsReceived">
+	<ng-container *ngIf="products && products.length>0;else noProductsInThisCategory" >
+		<div id="list-header">
+			<div id="order-container">
+				<button id="order-button">Rendezés<fa-icon [icon]="faSort"></fa-icon></button>
+				<div id="order-options">
+					<div (click)="sortProducts('price',true)">Ár szerint növekvő<fa-icon [icon]="faSortAmountUp"></fa-icon></div>
+					<div (click)="sortProducts('price',false)">Ár szerint csökkenő<fa-icon [icon]="faSortAmountDown"></fa-icon></div>
+					<div (click)="sortProducts('name',true)">Név szerint növekvő<fa-icon [icon]="faSortAlphaUp"></fa-icon></div>
+					<div (click)="sortProducts('name',false)">Név szerint csökkenő<fa-icon [icon]="faSortAlphaDown"></fa-icon></div>
+				</div>
+			</div>	
+		</div>
+		<div id="products" class="flex">
+			<div *ngFor="let product of products;index as i" class="card-container flex-33">
+				<a [routerLink]="[product | buildProductUrl]">
+					<div class="card-background"></div>
+					<div class="card text-center">
+						<div class="img-container align-items-end">
+							<img *ngIf="product.images['360degree']" id="product-viewer-icon" src="{{ 'iconImagesPath' | env}}/360-degree-icon.jpg">
+							<img src="{{ product | getProductImages }}" alt="{{ product.name }}">
+						</div>
+						<div class="product-info flex justify-content-between">
+							<span class="name"><b>{{ product.name }}</b></span>
+							<span class="price">{{ product.price | number | pointReplacer }} Ft</span>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</ng-container>
+	<ng-template #noProductsInThisCategory>
+		<h2>Jelenleg nincsenek termékek ebben a kategóriában.</h2>
+	</ng-template>
+</div>

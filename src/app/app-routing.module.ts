@@ -1,24 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductsComponent } from './products/products.component'
-import { ProductDetailsComponent } from './product-details/product-details.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
-    path: 'products/:category/:subcategory',component: ProductsComponent
+    path: '',
+    redirectTo : 'products',
+    pathMatch: 'full'
   },
   {
-    path: 'products/:category',component: ProductsComponent
+    path: 'products',loadChildren: ()=> import('./product/product.module').then(m=>m.ProductModule)
   },
   {
-    path: ':slug',component: ProductDetailsComponent
+    path: 'cart',loadChildren: ()=>import('./cart/cart.module').then(m=>m.CartModule)
   },
   {
-    path: '',redirectTo: '/products/bikes',pathMatch: 'full'
+    path: 'checkout',loadChildren: ()=>import('./checkout/checkout.module').then(m=>m.CheckoutModule)
   },
   {
-    path: '404',component: PageNotFoundComponent
+    path: '404',loadChildren: ()=> import('./page-not-found/page-not-found.module').then(m=>m.PageNotFoundModule)
   },
   {
     path: '**',redirectTo: '/404'

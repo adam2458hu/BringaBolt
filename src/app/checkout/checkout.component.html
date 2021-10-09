@@ -1,0 +1,280 @@
+<div id="progress-bar" #progressBar>
+	<div *ngFor="let number of [0,1,2,3];index as i" class="step" [ngClass]="{'completed':currentIndex>i,'active':currentIndex==i}">
+		<div class="step-icon" [ngClass]="{'visible':currentIndex>i}">
+			<fa-icon [icon]="faCheck"></fa-icon>
+		</div>
+		<div class="step-number" [ngClass]="{'visible':currentIndex<=i}">{{ i+1 }}</div>
+		<div class="step-title" [ngSwitch]="i">
+			<ng-container *ngSwitchCase="0">Cím megadása</ng-container>
+			<ng-container *ngSwitchCase="1">Szállítási és fizetési mód</ng-container>
+			<ng-container *ngSwitchCase="2">Összegzés</ng-container>
+			<ng-container *ngSwitchCase="3">Rendelés megerősítése</ng-container>
+		</div>
+	</div>
+	<div id="container-to-hide-overflow">
+		<div id="progress" #progress></div>
+	</div>
+</div>
+<div id="checkout" [ngSwitch]="currentIndex">
+	<form #checkoutForm="ngForm" (ngSubmit)="onSubmit(checkoutForm)">
+		<div class="flex page" *ngSwitchCase="0">
+			<div class="flex-50 pr-10">
+				<h2>Szállítási cím</h2>
+				<div class="flex paper-body">
+					<div class="flex-50 pr-5">
+						<div>
+							<input type="text" name="lastName" [(ngModel)]="deliveryAddress.lastName" id="lastName" placeholder="Vezetéknév">
+						</div>
+						<div>
+							<input type="text" name="firstName" [(ngModel)]="deliveryAddress.firstName" #fname="ngModel" id="firstName" placeholder="Keresztnév">
+						</div>
+						<div>
+							<input type="text" name="city" [(ngModel)]="deliveryAddress.city" id="city" placeholder="Város">
+						</div>
+						<div>
+							<input type="text" name="postalCode" [(ngModel)]="deliveryAddress.postalCode" id="postalCode" placeholder="Irányítószám">
+						</div>
+					</div>
+					<div class="flex-50 pl-5">
+						<div>
+							<input type="text" name="street" [(ngModel)]="deliveryAddress.street" id="street" placeholder="Utca">
+						</div>
+						<div>
+							<input type="text" name="phone" [(ngModel)]="deliveryAddress.phone" id="phone" placeholder="Telefon">
+						</div>
+						<div>
+							<input type="text" name="email" [(ngModel)]="deliveryAddress.email" id="email" placeholder="Email">
+						</div>
+					</div>
+				</div>
+				<div>
+					<input type="checkbox" name="isBillingAddressTheSame" id="isBillingAddressTheSame" [(ngModel)]="isBillingAddressTheSame" (change)="isBillingAddressTheSame?billingAddress=deliveryAddress:''" checked>
+					<label for="isBillingAddressTheSame">A szállítási és a számlázási cím megegyezik</label>
+				</div>
+			</div>
+			<div class="flex-50 pl-10" *ngIf=!isBillingAddressTheSame>
+				<h2>Számlázási cím</h2>
+				<div class="flex paper-body">
+					<div class="flex-50 pr-5">
+						<div>
+							<input type="text" name="lastName" [(ngModel)]="billingAddress.lastName" id="lastName" placeholder="Vezetéknév">
+						</div>
+						<div>
+							<input type="text" name="firstName" [(ngModel)]="billingAddress.firstName" id="firstName" placeholder="Keresztnév">
+						</div>
+						<div>
+							<input type="text" name="city" [(ngModel)]="billingAddress.city" id="city" placeholder="Város">
+						</div>
+						<div>
+							<input type="text" name="postalCode" [(ngModel)]="billingAddress.postalCode" id="postalCode" placeholder="Irányítószám">
+						</div>
+					</div>
+					<div class="flex-50 pl-5">
+						<div>
+							<input type="text" name="street" [(ngModel)]="billingAddress.street" id="street" placeholder="Utca">
+						</div>
+						<div>
+							<input type="text" name="phone" [(ngModel)]="billingAddress.phone" id="phone" placeholder="Telefon">
+						</div>
+						<div>
+							<input type="text" name="email" [(ngModel)]="billingAddress.email" id="email" placeholder="Email">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flex page" *ngSwitchCase="1">
+			<div class="flex-50 pr-10">
+				<h2>Szállítás</h2>
+				<div class="flex paper-body">
+					<div class="flex-33">
+						<label for="dpd" class="active">
+							<input type="radio" name="delivery_method" id="dpd" value="dpd" checked="checked">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/dpd-icon.png" alt="">
+							</div>
+							<div class="payment-info"><b>DPD futárszolgálat</b><br>990 Ft</div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="gls">
+							<input type="radio" name="delivery_method" id="gls" value="gls">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/gls-icon.png" alt="">
+							</div>
+							<div class="payment-info"><b>GLS futárszolgálat</b><br>990 Ft</div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="mpl">
+							<input type="radio" name="delivery_method" id="mpl" value="mpl">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/mpl-icon.png" alt="">
+							</div>
+							<div class="payment-info"><b>MPL futárszolgálat</b><br>1190 Ft</div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="posta-pont">
+							<input type="radio" name="delivery_method" id="posta-pont" value="posta-pont">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/posta-pont-icon.png" alt="">
+							</div>
+							<div class="payment-info"><b>Posta Pont</b><br>890 Ft</div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="pick-pack-pont">
+							<input type="radio" name="delivery_method" id="pick-pack-pont" value="pick-pack-pont">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<img src="{{ 'iconImagesPath' | env }}/pick-pack-pont-icon.png" alt="">
+							</div>
+							<div class="payment-info"><b>Pick Pack pont</b><br>890 Ft
+							</div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="personal">
+							<input type="radio" name="delivery_method" id="personal" value="personal">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<fa-icon id="store-icon" [icon]="faStore"></fa-icon>
+							</div>
+							<div class="payment-info"><b>Személyes átvétel</b><br>ingyenes</div>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="flex-50 pl-10">
+				<h2>Fizetés</h2>
+				<div class="flex paper-body">
+					<div class="flex-33">
+						<label for="cash" class="active">
+							<input type="radio" name="payment_method" id="cash" value="cash" checked>
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<fa-icon id="money-bill-icon" [icon]="faMoneyBillWave"></fa-icon>
+							</div>
+							<div class="payment-info"><b>Fizetés készpénzben átvételkor</b></div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="debitCard">
+							<div class="img-container">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/visa-icon.png" alt="">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/mastercard-icon.png" alt="">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/maestro-icon.png" alt="">
+							</div>
+							<input type="radio" name="payment_method" id="debitCard" value="debitCard">
+							<div class="label-decoration"></div>
+							<div class="payment-info"><b>Előrefizetés bankkártyával</b></div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="paypal">
+							<input type="radio" name="payment_method" id="paypal" value="paypal">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<img class="icon" src="{{ 'iconImagesPath' | env }}/paypal-icon.png" alt="">
+							</div>
+							<div class="payment-info"><b>Előrefizetés PayPallal</b></div>
+						</label>
+					</div>
+					<div class="flex-33">
+						<label for="bankWire">
+							<input type="radio" name="payment_method" id="bankWire" value="bankWire">
+							<div class="label-decoration"></div>
+							<div class="img-container">
+								<fa-icon id="bank-icon" [icon]="faUniversity"></fa-icon>
+							</div>
+							<div class="payment-info"><b>Banki átutalás (előre utalás)</b></div>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div *ngSwitchCase="2">
+			<table>
+				<colgroup>
+			        <col width="10%">
+			        <col width="45%">
+			        <col width="45%">
+			    </colgroup>
+				<thead>
+					<tr>
+						<th></th>
+						<th>Számlázási cím</th>
+						<th>Szállítási cím</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>Név</th>
+						<td>Sipos Ádám</td>
+						<td>Sipos Ádám</td>
+					<tr>
+						<th>Irányítószám</th>
+						<td>3900</td>
+						<td>3900</td>
+					</tr>
+					<tr>
+						<th>Város</th>
+						<td>Szerencs</td>
+						<td>Szerencs</td>
+					</tr>
+					<tr>
+						<th>Lakcím</th>
+						<td>Erdei Ferenc utca 7.</td>
+						<td>Erdei Ferenc utca 7.</td>
+					</tr>
+					<tr>
+						<th>Telefonszám</th>
+						<td>+36309123882</td>
+						<td>+36309123882</td>
+					</tr>
+					<tr>
+						<th>Email</th>
+						<td>adam2458hu@gmail.com</td>
+						<td>adam2458hu@gmail.com</td>
+					</tr>
+				</tbody>
+			</table>
+			<app-cart-item-list class="my-20"></app-cart-item-list>
+			<div class="flex">
+				<div class="flex-50"></div>
+				<div class="flex flex-50 justify-content-between">
+					<span><b>Szállítási mód:</b> Magyarország - DPD</span>
+					<span>0 Ft</span>
+				</div>
+				<div class="flex-50"></div>
+				<div class="flex flex-50 justify-content-between">
+					<span><b>Fizetési mód:</b> Online bankkártyás fizetés</span>
+					<span><b>0 Ft</b></span>
+				</div>
+				<div class="flex-50"></div>
+				<div class="flex flex-50 justify-content-between">
+					<span><b>A megrendelés végösszege:</b></span>
+					<span><b>{{ totalValue }} Ft</b></span>
+				</div>
+				<div class="flex-50"></div>
+				<div class="flex flex-50 justify-content-between">
+					<span>A megrendelés végösszege áfa nélkül:</span>
+					<span>{{ totalValue }} Ft</span>
+				</div>
+			</div>
+		</div>
+		<div *ngSwitchCase="3">
+			Köszönjük megrendelését! A rendelés megerősítéséhez kérjük, hogy kattintson az email címére küldött üzenetben található visszaigazoló linkre.
+		</div>
+		<div class="flex justify-content-between mt-20">
+			<button *ngIf="currentIndex<=2" type="button" class="btn btn-grey" (click)="previousStep()">&lt; Vissza</button>
+			<button *ngIf="currentIndex<2" type="button" class="btn btn-grey" (click)="nextStep()">Tovább &gt;</button>
+			<button *ngIf="currentIndex===2" type="submit" class="btn btn-grey" (click)="nextStep()">Rendelés</button>
+		</div>
+	</form>
+</div>

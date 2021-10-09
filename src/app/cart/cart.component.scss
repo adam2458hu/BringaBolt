@@ -1,0 +1,42 @@
+@import '../../variables';
+
+	#product-list {
+		max-height: 300px;
+		overflow: auto;
+
+		>div {
+			padding-top: 5px;
+
+			&:not(:first-child) {
+				border-top: 1px solid #bbb;
+			}
+
+			fa-icon {
+				cursor: pointer;
+			}
+			
+			#order-quantity-container {
+				button, input {
+					display: inline-block;
+					border: 1px solid #333;
+					text-align: center;
+					font-size: 12px;
+					padding: 2px 5px;
+				}
+
+				button {
+					box-shadow: none;
+					background-color: #333;
+					border-radius: 0;
+					color: white;
+				}
+
+				input {
+					background-color: white;
+					color: black;
+					width: 50px;
+					margin: 0 -1px;
+				}
+			}
+		}
+	}

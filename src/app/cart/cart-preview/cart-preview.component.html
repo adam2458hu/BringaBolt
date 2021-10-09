@@ -1,0 +1,26 @@
+<button #cartButton id="cart" class="btn btn-blue" (click)="openCart()"><fa-icon [fixedWidth]="true" [icon]="faShoppingCart"></fa-icon>Kosár<span id="cart-item-count" *ngIf="cartItemCount>0">({{cartItemCount}})</span></button>
+<div id="cart-preview">
+	<ng-container *ngIf="cartItemCount;else cartIsEmpty">
+		<app-cart-item-list></app-cart-item-list>
+		<div id="cart-preview-total" class="pt-10 my-10">
+			<div>
+				<div class="flex justify-content-between">
+					<span>Szállítási díj:</span>
+					<span>{{ shippingFee | number | pointReplacer }} Ft</span>
+				</div>
+				<div class="flex justify-content-between">
+					<span>Bruttó végösszeg:</span>
+					<span>{{totalValue+shippingFee | number | pointReplacer }} Ft</span>
+				</div>
+			</div>
+			<p *ngIf="isAnyProductOutOfStock" class="alert alert-red">A *-al jelölt termékek jelenleg nincsenek készleten, de megrendeljük, és annak megérkezésekor tájékoztatni fogjuk Önt.</p>
+		</div>
+		<div class="flex flex-row">
+			<div class="flex-50 pr-5"><button class="btn btn-grey" (click)="openCart()">Kosár megtekintése</button></div>
+			<div class="flex-50 pl-5"><button class="btn btn-grey" (click)="goToCheckout()">Megrendelés</button></div>
+		</div>
+	</ng-container>
+	<ng-template #cartIsEmpty>
+		<div class="text-center">A kosár jelenleg üres.</div>
+	</ng-template>
+</div>

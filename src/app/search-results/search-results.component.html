@@ -1,0 +1,32 @@
+<div id="search-box" #searchBox class="flex">
+	<input id="search-box-input" #searchBoxInput type="text" placeholder="Keresés..." (keyup)="search();hasValue()" (keyup.enter)="search()" (focusout)="onFocusOut($event)">
+	<fa-icon id="reset-icon" [icon]="faTimesCircle" [fixedWidth]="true" (click)="resetSearchBoxInput()"></fa-icon>
+	<fa-icon id="search-icon" [icon]="faSearch" [fixedWidth]="true"></fa-icon>
+	<div *ngIf="searchBoxInput.value!=''" id="search-results" #searchResultsRef>
+		<ng-container *ngIf="searchResults.length>0;else noResults">
+			<a *ngFor="let product of searchResults" class="flex justify-content-between" [routerLink]="[product | buildProductUrl]" #searchResultsItem>
+				<div class="flex-70">{{ product.name }}</div>
+				<div class="flex-30 text-right">{{ product.price | number | pointReplacer }} Ft</div>
+			</a>
+		</ng-container>
+		<ng-template #noResults>
+			<div>Nincs találat</div>
+		</ng-template>
+	</div>
+</div>
+<!-- <div id="search-box">
+	<input #searchBox id="search-box-input" type="text" placeholder="Keresés..." (keyup)="search()" (keyup.enter)="search()" (focusout)="onFocusOut($event)">
+	<fa-icon id="reset-icon" [icon]="faTimesCircle" [fixedWidth]="true" (click)="resetSearchBoxInput()"></fa-icon>
+	<fa-icon id="search-icon" [icon]="faSearch" [fixedWidth]="true"></fa-icon>
+	<div *ngIf="searchBox.value!=''" id="search-results" #searchResultsRef>
+		<ng-container *ngIf="searchResults.length>0;else noResults">
+			<a *ngFor="let product of searchResults" class="flex justify-content-between" [routerLink]="[product | buildProductUrl]" #searchResultsItem>
+				<div class="flex-70">{{ product.name }}</div>
+				<div class="flex-30 text-right">{{ product.price | number | pointReplacer }} Ft</div>
+			</a>
+		</ng-container>
+		<ng-template #noResults>
+			<div>Nincs találat</div>
+		</ng-template>
+	</div>
+</div> -->
