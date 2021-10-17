@@ -10,6 +10,7 @@ import { BuildProductUrlPipe } from './pipes/build-product-url.pipe';
 import { GetProductImagesPipe } from './pipes/get-product-images.pipe';
 
 import { LoadedDirective } from './directives/loaded.directive';
+import { ImgLoadedDirective } from './directives/img-loaded.directive';
 
 @NgModule({
 	declarations: [
@@ -17,6 +18,7 @@ import { LoadedDirective } from './directives/loaded.directive';
 		EnvPipe,
 		BuildProductUrlPipe,
 		LoadedDirective,
+		ImgLoadedDirective,
 		GetProductImagesPipe
 	],
 	imports: [
@@ -30,6 +32,7 @@ import { LoadedDirective } from './directives/loaded.directive';
 		RouterModule,
 		FontAwesomeModule,
 		LoadedDirective,
+		ImgLoadedDirective,
 		PointReplacerPipe,
 		EnvPipe,
 		BuildProductUrlPipe,

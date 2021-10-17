@@ -13,6 +13,12 @@
 		fa-icon {
 			cursor: pointer;
 		}
+
+		#item-name {
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
 		
 		#order-quantity-container {
 			button, input {

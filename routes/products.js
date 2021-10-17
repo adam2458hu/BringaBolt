@@ -53,6 +53,7 @@ var products = [
 		name:"Cube Litening C68",
 		slug:"cube-litening-c68-x-slt-carbonprizm",
 		price:2719990,
+		discountPercentage:12,
 		images: {
 			"default" : {
 				"grey" : ["cube-litening-c68-x-slt-carbonprizm-black.jpg"]
@@ -74,6 +75,7 @@ var products = [
 		name:"Cube Agree C:62",
 		slug:"cube-agree-c62",
 		price:969990,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"blue" : ["cube-agree-c62.jpg"]
@@ -99,6 +101,7 @@ var products = [
 			}
 		},
 		price:519990,
+		discountPercentage:0,
 		availableColors : ["red"],
 		availableSizes : ["48","50","52","54","56"]
 	},
@@ -109,6 +112,7 @@ var products = [
 		name:"Merida Big Nine 20 29\"",
 		slug:"merida-big-nine-20-29",
 		price:229900,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"grey" : ["big-nine-20-antracit-silver.jpg"]
@@ -130,6 +134,7 @@ var products = [
 		name: "Moon Orion",
 		slug: "moon-orion-rear-lights",
 		price: 3690,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"red" : ["moon-orion-rear.jpg"]
@@ -150,6 +155,7 @@ var products = [
 		name: "Continental Grand Sport Race",
 		slug: "continental-grand-sport-race",
 		price: 14930,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"black" : ["continental-grand-sport-race.jpg"]
@@ -170,6 +176,7 @@ var products = [
 		name: "Merida Big.Nine XT 2021",
 		slug: "merida-big-nine-xt-2021",
 		price: 939000,
+		discountPercentage:20,
 		images: {
 			"default" : {
 				"black" : ["merida-big-nine-xt-matt-black-white.jpg"],
@@ -194,6 +201,7 @@ var products = [
 		name: "Giyo Pocket MP",
 		slug: "giyo-pocket-mp",
 		price: 2690,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"black" : ["giyo-pocket-mp.jpg"]
@@ -214,6 +222,7 @@ var products = [
 		name: "Scott ARX Plus",
 		slug: "scott-arx-plus",
 		price: 30590,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"black" : ["scott-arx-plus.jpg"]
@@ -235,6 +244,7 @@ var products = [
 		name:"Cube Litening C:68X SL",
 		slug:"cube-litening-c68x-sl-liquidbluencarbon",
 		price:2769990,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"blue" : [
@@ -271,7 +281,6 @@ var products = [
 				]
 			}
 		},
-		//images360degree: true,
 		availableColors : ["blue"],
 		availableSizes : ["48","50","52","54","56"],
 		productsInStock : {
@@ -288,6 +297,7 @@ var products = [
 		name: "KMC X9, patentszemmel",
 		slug: "kmc-x9",
 		price: 5690,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"gold" : ["chain-kmc-x9-gold-114-links-w-missinglink.jpg"],
@@ -312,6 +322,7 @@ var products = [
 		name: "Specialized S-Works Evade II ANGi MIPS",
 		slug: "specialized-s-works-evade-ii-angi-mips-road-helmet",
 		price: 115320,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"white" : ["specialized-s-works-evade-ii-angi-mips-road-helmet-white.jpg"],
@@ -392,21 +403,21 @@ var products = [
 		name: "Specialized S-Works Prevail II Vent ANGi MIPS Bora-Hansgrohe Team Helmet",
 		slug: "specialized-s-works-prevail-ii-vent-angi-mips",
 		price: 115320,
+		discountPercentage:5,
 		images: {
 			"default" : {
-				"green" : ["specialized-s-works-prevail-ii-vent-angi-mips-bora-hansgrohe-team-helmet-green.jpg"]
+				"cyan" : ["specialized-s-works-prevail-ii-vent-angi-mips-bora-hansgrohe-team-helmet-green.jpg"]
 			}
 		},
-		availableColors: ["green"],
+		availableColors: ["cyan"],
 		availableSizes : ["S","M"],
 		productsInStock : {
-			"green" : {
+			"cyan" : {
 				"S":1,
 				"M":0
 			}
 		}
 	},
-
 	{
 		id:14,
 		categories: ["parts","chains"],
@@ -414,6 +425,7 @@ var products = [
 		name: "KMC X8, patentszemmel",
 		slug: "kmc-x8",
 		price: 4831,
+		discountPercentage:0,
 		images: {
 			"default" : {
 				"gold" : ["x8-Gold.jpg","X8_0000_X8 Ti-N Gold.jpg",],

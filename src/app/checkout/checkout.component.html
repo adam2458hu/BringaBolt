@@ -1,5 +1,6 @@
 <div id="progress-bar" #progressBar>
-	<div *ngFor="let number of [0,1,2,3];index as i" class="step" [ngClass]="{'completed':currentIndex>i,'active':currentIndex==i}">
+	<!-- <div *ngFor="let number of [0,1,2,3];index as i" class="step" [ngClass]="{'completed':currentIndex>i,'active':currentIndex==i}"> -->
+	<div *ngFor="let number of [0,1,2,3];index as i" class="step" [ngClass]="{'active':currentIndex==i && allImagesLoaded,'completed':currentIndex>i && allImagesLoaded}">
 		<div class="step-icon" [ngClass]="{'visible':currentIndex>i}">
 			<fa-icon [icon]="faCheck"></fa-icon>
 		</div>

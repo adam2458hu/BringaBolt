@@ -1,28 +1,125 @@
 <div *ngIf="productsReceived">
 	<ng-container *ngIf="products && products.length>0;else noProductsInThisCategory" >
-		<div id="list-header">
-			<div id="order-container">
-				<button id="order-button">Rendezés<fa-icon [icon]="faSort"></fa-icon></button>
-				<div id="order-options">
-					<div (click)="sortProducts('price',true)">Ár szerint növekvő<fa-icon [icon]="faSortAmountUp"></fa-icon></div>
-					<div (click)="sortProducts('price',false)">Ár szerint csökkenő<fa-icon [icon]="faSortAmountDown"></fa-icon></div>
-					<div (click)="sortProducts('name',true)">Név szerint növekvő<fa-icon [icon]="faSortAlphaUp"></fa-icon></div>
-					<div (click)="sortProducts('name',false)">Név szerint csökkenő<fa-icon [icon]="faSortAlphaDown"></fa-icon></div>
+		<div id="list-header" class="flex justify-content-between align-items-center">
+			<div id="filter-container" class="flex-33">
+				<button id="filter-button" #filterButton (click)="openFilterWindow()">Szűrők</button>
+				<form id="filters" #filterWindow #filterForm="ngForm" (ngSubmit)="onSubmit(filterForm)" [hidden]="!filterWindowIsOpened">
+					<span class="close" (click)="closeFilterWindow()">&times;</span>
+					<div class="filter">
+						<div class="filter-name">Márka</div>
+						<div *ngFor="let brand of filters.brands">
+							<label>
+								<input type="checkbox" name="brand" [(ngModel)]="brand.isChecked" value="{{ brand.value }}">{{ brand.value }}
+							</label>
+						</div>
+					</div>
+					<div class="filter">
+						<div class="filter-name">Ár</div>
+						<div id="slider-container" #sliderContainer>
+							<div id="slider-track" #sliderTrack (click)="onSliderTrackClick($event)"></div>
+							<!-- <div id="slider-tooltip1" #sliderTooltip1>{{ minPriceSetByUser }} Ft</div>
+							<div id="slider-tooltip2" #sliderTooltip2>{{ maxPriceSetByUser }} Ft</div> -->
+							<div id="slider-tooltip1" class="slider-tooltip" #sliderTooltip1>{{ minPriceSetByUser }} Ft</div>
+							<div id="slider-tooltip2" class="slider-tooltip" #sliderTooltip2>{{ maxPriceSetByUser }} Ft</div>
+							<input type="range" id="slider1" #slider1 name="filter.minPriceSetByUser" [(ngModel)]="minPriceSetByUser" (ngModelChange)="onHandleMove(true)"  (mousedown)="bringSliderHandleForwardVisually(true)" min="{{ minPossiblePrice }}" max="{{ maxPossiblePrice }}">
+							<input type="range" id="slider2" #slider2 name="filter.maxPriceSetByUser" [(ngModel)]="maxPriceSetByUser" min="{{ minPossiblePrice }}" max="{{ maxPossiblePrice }}" (ngModelChange)="onHandleMove(false)" (mousedown)="bringSliderHandleForwardVisually(false)">
+							<div id="min-label" #minLabel class="slider-label">Min</div>
+							<div id="max-label" #maxLabel class="slider-label">Max</div>
+						</div>
+						<div class="flex">
+							<div class="flex-50 flex align-items-center">
+								<div class="flex-30">Min:</div>
+								<div class="flex-70"><input type="text" id="minPriceSetByUser" class="p-5 w-100" name="filter.minPriceSetByUser" [ngModel]="minPriceSetByUser" (change)="checkForWrongPriceInput($event)" placeholder="Min"></div>
+							</div>
+							<div class="flex-50 flex align-items-center justify-content-end">
+								<div class="flex-30"> Max:</div>
+								<div class="flex-70"><input type="text" id="maxPriceSetByUser" class="p-5 w-100" name="filter.maxPriceSetByUser" [ngModel]="maxPriceSetByUser" (change)="checkForWrongPriceInput($event)" placeholder="Max"></div>
+							</div>
+						</div>
+					</div>
+					<div class="filter">
+						<div class="filter-name">Kerékméret</div>
+						<div *ngFor="let wheelSize of filters.wheelSizes">
+							<label>
+								<input type="checkbox" [(ngModel)]="wheelSize.isChecked" [ngModelOptions]="{standalone: true}" value="{{ wheelSize.value }}">{{ wheelSize.value }}
+							</label>
+						</div>
+					</div>
+					<div class="filter">
+						<div class="filter-name">Vázméret</div>
+						<div *ngFor="let frameSize of filters.frameSizes">
+							<label>
+								<input type="checkbox" [(ngModel)]="frameSize.isChecked" [ngModelOptions]="{standalone: true}" value="{{ frameSize.value }}">{{ frameSize.value }}
+							</label>
+						</div>
+					</div>
+					<button class="btn btn-blue">Szűrés</button>
+				</form>
+			</div>
+			<div class="flex-33 text-center"><b>{{ products.length }} termék van ebben a kategóriában</b></div>
+			<div id="order-container" class="flex-33 flex justify-content-end align-items-center">
+				<span class="mr-5">Rendezés:</span>
+				<div class="position-relative">
+					<button id="order-button" #orderButton (click)="orderWindowIsOpened=!orderWindowIsOpened">
+						<ng-container [ngSwitch]="sortBy.property">
+							<ng-container *ngSwitchCase="'name'">Név</ng-container>
+							<ng-container *ngSwitchCase="'price'">Ár</ng-container>
+							<ng-container *ngSwitchCase="'discountPercentage'">Kedvezmény</ng-container>
+								
+						</ng-container>
+						szerint
+						<ng-container [ngSwitch]="sortBy.ascending">
+							<ng-container *ngSwitchCase="true">növekvő</ng-container>
+							<ng-container *ngSwitchCase="false">csökkenő</ng-container>
+						</ng-container>
+					</button>
+					<div [ngClass]="{'slideIn':orderWindowIsOpened}" #orderWindow id="order-options">
+						<div (click)="sortProducts('price',true)">Ár szerint növekvő</div>
+						<div (click)="sortProducts('price',false)">Ár szerint csökkenő</div>
+						<div (click)="sortProducts('discountPercentage',true)">Kedvezmény szerint növekvő</div>
+						<div (click)="sortProducts('discountPercentage',false)">Kedvezmény szerint csökkenő</div>
+						<div (click)="sortProducts('name',true)">Név szerint növekvő</div>
+						<div (click)="sortProducts('name',false)">Név szerint csökkenő</div>
+					</div>
 				</div>
-			</div>	
+			</div>
 		</div>
 		<div id="products" class="flex">
 			<div *ngFor="let product of products;index as i" class="card-container flex-33">
 				<a [routerLink]="[product | buildProductUrl]">
 					<div class="card-background"></div>
-					<div class="card text-center">
-						<div class="img-container align-items-end">
-							<img *ngIf="product.images['360degree']" id="product-viewer-icon" src="{{ 'iconImagesPath' | env}}/360-degree-icon.jpg">
+					<div class="flex flex-column card text-center">
+						<div class="product-header flex align-items-center">
+							<img *ngIf="product.images['360degree']" class="product-viewer-icon" src="{{ 'iconImagesPath' | env}}/360-degree-icon.jpg">
+							<span *ngIf="product.discountPercentage>0" class="discount-percentage">-{{ product.discountPercentage }}%<!-- {{ product.price | number | pointReplacer }} Ft --></span>
+						</div>
+						<div class="product-body img-container align-items-end">
 							<img src="{{ product | getProductImages }}" alt="{{ product.name }}">
 						</div>
-						<div class="product-info flex justify-content-between">
-							<span class="name"><b>{{ product.name }}</b></span>
-							<span class="price">{{ product.price | number | pointReplacer }} Ft</span>
+						<div class="product-footer"><b>{{ product.name }}</b>
+							<!-- <span class="price">{{ product.price | number | pointReplacer }} Ft</span> -->
+						</div>
+						<div class="price flex justify-content-between">
+							<ng-container *ngIf="product.discountPercentage===0;else productIsOnSale">
+								<div>{{ product.price | number | pointReplacer }} Ft</div>
+							</ng-container>
+							<ng-template #productIsOnSale>
+								<div>
+									<span class="discounted-final-price">
+										<!-- Akciós ár: -->
+										{{ (product.price*(1-(product.discountPercentage/100))) | number: '1.0-0' | pointReplacer }} Ft
+									</span>
+									<span class="discounted-original-price">
+										{{ product.price | number: '1.0-0' | pointReplacer }} Ft
+									</span>
+								</div>
+							</ng-template>
+							<ng-container *ngIf="product.productsInStock;else notInStock">
+								<span class="available">Raktáron</span>
+							</ng-container>
+							<ng-template #notInStock>
+								<span class="unavailable">Előrendelhető</span>
+							</ng-template>
 						</div>
 					</div>
 				</a>

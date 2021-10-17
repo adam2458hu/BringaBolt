@@ -1,4 +1,4 @@
-<button #cartButton id="cart" class="btn btn-blue" (click)="openCart()"><fa-icon [fixedWidth]="true" [icon]="faShoppingCart"></fa-icon>Kosár<span id="cart-item-count" *ngIf="cartItemCount>0">({{cartItemCount}})</span></button>
+<button #cartButton id="cart" class="btn btn-purple" (click)="openCart()"><fa-icon [fixedWidth]="true" [icon]="faShoppingCart"></fa-icon>Kosár<span *ngIf="cartItemCount>0" id="cart-item-count" class="ml-5">({{cartItemCount}})</span></button>
 <div id="cart-preview">
 	<ng-container *ngIf="cartItemCount;else cartIsEmpty">
 		<app-cart-item-list></app-cart-item-list>

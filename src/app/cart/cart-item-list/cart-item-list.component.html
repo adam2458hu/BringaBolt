@@ -5,48 +5,25 @@
 				<img id="item-image" src="{{ item | getProductImages: item.selectedColor}}" alt="{{item.name}}">
 			</a>
 		</div>
-		<div class="flex-80 pl-5">
-			<!-- A következő két blokk azért van külön, hogyha a termék neve vagy ára vagy mindkettő túl hosszú lenne, akkor ne törjék meg a sort, ha "átlógnának" egymás oszlopaiba, mint a lentebb kommentezett kód esetén-->
-			<div class="flex justify-content-between">
-				<a [routerLink]="[item | buildProductUrl]"><b>{{ item.name }}<span *ngIf="!item.isInStock" class="red ml-5">*</span></b></a>
-				<div (click)="deleteProduct(item)">
-					<fa-icon class="mr-5" [icon]="faTrashAlt" title="Törlés"></fa-icon>Törlés
+		<div class="flex-80 pl-5" style="min-width: 0">
+			<div class="flex">
+				<div id="item-name" class="flex-90"><a [routerLink]="[item | buildProductUrl]"><b>{{ item.name }}<span *ngIf="!item.isInStock" class="red ml-5">*</span></b></a></div>
+				<div (click)="deleteProduct(item)" class="flex-10 text-right">
+					<fa-icon [icon]="faTrashAlt" title="Törlés"></fa-icon>
 				</div>
 			</div>
-			<div class="flex justify-content-between">
-				<div>
-					<div class="fs-12">Szín: {{ item.selectedColor }}</div>
-					<div class="fs-12">Méret: {{ item.selectedSize }}</div>
-					<div id="order-quantity-container" class="fs-12">
-						<span class="mr-5">Db:</span>		
-						<button (click)="changeQuantity(i,-1)">-</button>
-						<input type="text" id="order-quantity-input" #orderQuantityInput value="{{ item.selectedQuantity }}" (keyup)="changeQuantityToValue(i,$event)" (focusout)="checkForWrongInput(i,$event)" autocomplete="off">
-						<button (click)="changeQuantity(i,1)">+</button>
-					</div>
-				</div>
-				<div class="flex align-items-end">
-					<!-- ide pipe-ot írni https://medium.com/showpad-engineering/why-you-should-never-use-function-calls-in-angular-template-expressions-e1a50f9c0496 -->
-					<div>{{ getProductPrice(item) | number | pointReplacer }} Ft</div>
-				</div>
-			</div>
-		</div>
-		<!-- 
-		<div class="flex-50 px-10">
-			<b>{{ item.name }}<span *ngIf="!item.isInStock" class="red ml-5">*</span></b>
 			<div class="fs-12">Szín: {{ item.selectedColor }}</div>
 			<div class="fs-12">Méret: {{ item.selectedSize }}</div>
-			<div id="order-quantity-container" class="fs-12">
-				<span class="mr-5">Db:</span>		
-				<button (click)="changeQuantity(i,-1)">-</button>
-				<input type="text" id="order-quantity-input" value="{{ item.selectedQuantity }}">
-				<button (click)="changeQuantity(i,1)">+</button>
+			<div class="flex justify-content-between">
+				<div id="order-quantity-container" class="fs-12">
+					<span class="mr-5">Db:</span>		
+					<button (click)="changeQuantity(i,-1)">-</button>
+					<input type="text" id="order-quantity-input" #orderQuantityInput value="{{ item.selectedQuantity }}" (keyup)="changeQuantityToValue(i,$event)" (focusout)="checkForWrongInput(i,$event)" autocomplete="off">
+					<button (click)="changeQuantity(i,1)">+</button>
+				</div>
+				<!-- ide pipe-ot írni https://medium.com/showpad-engineering/why-you-should-never-use-function-calls-in-angular-template-expressions-e1a50f9c0496 -->
+				<div>{{ getProductPrice(item) | number | pointReplacer }} Ft</div>
 			</div>
 		</div>
-		<div class="flex flex-30 flex-column justify-content-between align-items-end">
-			<div (click)="deleteitem(item)">
-				<fa-icon [fixedWidth]="true" [icon]="faTrashAlt" title="Törlés"></fa-icon>
-			</div>
-			<div>{{ item.price | number | pointReplacer }} Ft</div>
-		</div>-->
 	</div>
 </div>

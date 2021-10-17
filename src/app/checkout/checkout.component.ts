@@ -1,7 +1,9 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ViewChildren, QueryList, ElementRef, Renderer2} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CartService } from '../core/cart.service';
 import { faCheck,faStore,faUniversity,faMoneyBillWave } from '@fortawesome/free-solid-svg-icons';
+import { ImgLoadedDirective } from '../shared/directives/img-loaded.directive';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -10,6 +12,7 @@ import { faCheck,faStore,faUniversity,faMoneyBillWave } from '@fortawesome/free-
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
   currentIndex: number=0;
+  allImagesLoaded: boolean;
   progressInterval: number=0;
   progressBarWidth: number;
   progressWidth: number;
@@ -41,6 +44,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   totalValue: number;
   @ViewChild('progressBar') progressBar: ElementRef;
   @ViewChild('progress') progress: ElementRef;
+  @ViewChildren(ImgLoadedDirective) images: QueryList<ImgLoadedDirective>;
   constructor(private renderer2: Renderer2,private cartService: CartService) { }
 
   ngOnInit(): void {
@@ -51,6 +55,29 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.progressBarWidth=parseInt(getComputedStyle(this.progressBar.nativeElement).getPropertyValue('width'));
+    
+    console.log('képek száma: '+this.images.length);
+    this.allImagesLoaded = false;
+    if (this.images.length>0) {
+      forkJoin(this.images.map(imgDir => imgDir.loaded)).subscribe(() => {
+        this.allImagesLoaded=true;
+        console.log('minden kép betöltődött');
+      })
+    } else {
+      this.allImagesLoaded = true;
+    }
+    this.images.changes.subscribe(()=>{
+      console.log('képek száma: '+this.images.length);
+      this.allImagesLoaded = false;
+      if (this.images.length>0) {
+        forkJoin(this.images.map(imgDirective => imgDirective.loaded)).subscribe(() => {
+          this.allImagesLoaded=true;
+          console.log('minden kép betöltődött');
+        })
+      } else {
+        this.allImagesLoaded = true;
+      }
+    });
   }
 
   previousStep(){
@@ -58,7 +85,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       --this.currentIndex;
       this.animateProgressBar(false);
     }
-    this.progressBar.nativeElement.getElementsByClassName("step-title")[0].scrollIntoView();
+    //this.progressBar.nativeElement.getElementsByClassName("step-title")[0].scrollIntoView();
   }
 
   nextStep(){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -8,10 +8,19 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 })
 export class FooterComponent implements OnInit {
   faEnvelope = faEnvelope;
-  
+  @ViewChild('newsletterBlock') newsletterBlock: ElementRef;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  shrinkNewsletterBlock(shrink: boolean){
+    if (shrink) {
+      this.newsletterBlock.nativeElement.classList.add("shrink");
+    } else {
+      this.newsletterBlock.nativeElement.classList.remove("shrink");
+    }
   }
 
 }

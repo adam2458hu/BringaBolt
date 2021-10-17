@@ -8,6 +8,7 @@
 	--progress-bar-target-offset: 0%;
 	--progress-bar-current-offset: -99.9%;
 	--progress-bar-animation-duration: 500ms;
+	--slider-thumb-width: 20px;
 }
 
 * {
@@ -21,6 +22,7 @@ html,body {
 body {
 	background: linear-gradient(white 70%,#111) no-repeat center center fixed;
 	font-family: 'Montserrat', sans-serif;
+	-webkit-filter: blur(0.000001px);
 	margin: 0;
 }
 
@@ -106,6 +108,7 @@ button {
 
 		&.btn-purple {
 			background-image: linear-gradient(to right,$color-red,$color-purple);
+		color:  white;
 		}
 
 		&.btn-orange-gradient {
@@ -114,6 +117,7 @@ button {
 
 		&.btn-blue{
 			background-image: linear-gradient(to right,$color-light-blue,$color-dark-blue);
+			color:  white;
 
 			#cart-item-count {
 				margin-left: 5px;
@@ -317,6 +321,7 @@ button {
 .main-container {
 	width: 1200px;
 	margin: 0 auto;
+	//overflow: hidden;
 }
 
 .flex {
@@ -350,6 +355,10 @@ button {
 	padding-right: 0;
 }
 
+.flex-90 {
+	flex: 90%;
+}
+
 .flex-80 {
 	flex: 80%;
 }
@@ -376,6 +385,10 @@ button {
 
 .flex-20 {
 	flex: 20%;
+}
+
+.flex-10 {
+	flex: 10%;
 }
 
 .justify-content-center {
@@ -422,6 +435,62 @@ button {
 	text-align: right;
 }
 
+.position-relative {
+	position: relative;
+}
+
+.position-absolute {
+	position: absolute;
+}
+
+.top-0 {
+	top: 0;
+}
+
+.bottom-0 {
+	bottom: 0;
+}
+
+.left-0 {
+	left: 0;
+}
+
+.right-0 {
+	right: 0;
+}
+
+.top-50 {
+	top: 50%;
+}
+
+.bottom-50 {
+	bottom: 50%;
+}
+
+.left-50 {
+	left: 50%;
+}
+
+.right-50 {
+	right: 50%;
+}
+
+.translate-middle {
+	transform: translate(-50%,-50%)
+}
+
+.translate-middle-x {
+	transform: translateX(-50%)	
+}
+
+.translate-middle-y {
+	transform: translateY(-50%)
+}
+
+.w-100 {
+	width: 100%;
+}
+
 .red {
 	color: red;
 }
@@ -445,12 +514,19 @@ fa-icon {
 	display: flex;
 	justify-content: center;
 
-	img,fa-icon {
+	img {
 		position: absolute;
-		max-height: 100%;
+		object-fit: contain;
+		/*max-height: 100%;
 		max-width: 100%;
 		height: auto;
-		width: auto;
+		width: auto;*/
+		height: 100%;
+	} 
+
+	fa-icon {
+		position: absolute;
+		object-fit: contain;
 	}
 
 	a {
@@ -480,6 +556,30 @@ fa-icon {
 	}
 }
 
+.input-with-button-container {
+	display: inline-flex;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,0.4);
+	transition: 0.2s;
+
+	&.shrink {
+		transform:  scale(0.95);
+		box-shadow: none;
+	}
+
+	button {
+		border-radius: 0;
+		box-shadow: none;
+
+		&:hover {
+			opacity: 0.8;
+		}
+
+		&:active {
+			transform:  none;
+		}
+	}
+}
+
 @keyframes fadeIn {
 	from {opacity: 0;}
 	to {opacity: 1;}
@@ -488,6 +588,16 @@ fa-icon {
 @keyframes slideInFromTop {
 	from {transform: translateY(-100%)}
 	to {transform: translateY(0)}
+}
+
+@keyframes slideInFromLeft {
+	from {transform: translateX(-100%)}
+	to {transform: translateX(0)}
+}
+
+@keyframes slideInFromRight {
+	from {transform: translateX(100%)}
+	to {transform: translateX(0)}
 }
 
 @keyframes scaleVertically {

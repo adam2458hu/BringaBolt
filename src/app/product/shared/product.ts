@@ -5,6 +5,7 @@ export class Product {
 	name: string;
 	slug: string;
 	price: number;
+	discountPercentage: number;
 	images: {
 		[type: string]: {
 			[color: string] : string[]
@@ -25,6 +26,7 @@ export class Product {
 		this.name = product.name;
 		this.slug = product.slug;
 		this.price = product.price;
+		this.discountPercentage = product.discountPercentage;
 		this.images = product.images;
 		this.availableColors = product.availableColors;
 		this.availableSizes = product.availableSizes;
