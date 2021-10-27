@@ -69,7 +69,7 @@ header {
 					padding-bottom: 5px;
 
 					&:hover {
-						border: 1px solid $color-red;
+						border: 1px solid $color-blue;
 						border-width: 1px 1px 1px 0;
 						padding-top: 7px;
 						padding-bottom: 4px;
@@ -83,7 +83,7 @@ header {
 							transform: translateX(-100%);
 							width: 12px;
 							height: 100%;
-							background-color: $color-red;
+							background-color: $color-blue;
 						}
 					}
 				}
