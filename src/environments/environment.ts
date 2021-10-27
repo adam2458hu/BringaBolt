@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   productImagesPath: 'assets/images/products',
-  iconImagesPath: 'assets/images/icons'
+  iconImagesPath: 'assets/images/icons',
+  siteURL : 'http://localhost:3000',
+  apiProductsURL : 'http://localhost:3000/api/products'
 };
 
 /*
