@@ -162,6 +162,7 @@ table {
 			font-family: 'Exo';
 			font-weight: 200;
 			white-space: nowrap;
+			-webkit-filter: blur(0.000001px);
 			transition: 0.5s color, 0.5s font-weight;
 
 			&:first-child {

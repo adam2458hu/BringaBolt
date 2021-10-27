@@ -56,23 +56,23 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.progressBarWidth=parseInt(getComputedStyle(this.progressBar.nativeElement).getPropertyValue('width'));
     
-    console.log('képek száma: '+this.images.length);
+    //console.log('képek száma: '+this.images.length);
     this.allImagesLoaded = false;
     if (this.images.length>0) {
       forkJoin(this.images.map(imgDir => imgDir.loaded)).subscribe(() => {
         this.allImagesLoaded=true;
-        console.log('minden kép betöltődött');
+        //console.log('minden kép betöltődött');
       })
     } else {
       this.allImagesLoaded = true;
     }
     this.images.changes.subscribe(()=>{
-      console.log('képek száma: '+this.images.length);
+      //console.log('képek száma: '+this.images.length);
       this.allImagesLoaded = false;
       if (this.images.length>0) {
         forkJoin(this.images.map(imgDirective => imgDirective.loaded)).subscribe(() => {
           this.allImagesLoaded=true;
-          console.log('minden kép betöltődött');
+          //console.log('minden kép betöltődött');
         })
       } else {
         this.allImagesLoaded = true;
