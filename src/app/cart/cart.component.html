@@ -1,6 +1,12 @@
-<ng-container *ngIf="cartItemCount;else cartIsEmpty">
-	<app-cart-item-list></app-cart-item-list>
-</ng-container>
-<ng-template #cartIsEmpty>
-	<div class="text-center">A kosár jelenleg üres.</div>
-</ng-template>
+<div id="cart">
+	<ng-container *ngIf="cartItemCount;else cartIsEmpty">
+		<app-cart-item-list></app-cart-item-list>
+		<div class="flex justify-content-between mt-20">
+			<button class="btn btn-grey" [routerLink]="['/products']">Vásárlás folytatása</button>
+			<button class="btn btn-grey" [routerLink]="['/checkout']">Pénztár</button>
+		</div>
+	</ng-container>
+	<ng-template #cartIsEmpty>
+		<div class="text-center">A kosár jelenleg üres.</div>
+	</ng-template>
+</div>

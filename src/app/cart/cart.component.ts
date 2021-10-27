@@ -28,7 +28,6 @@ export class CartComponent implements OnInit{
         this.shippingFee = this.totalValue>50000?0:990;
         this.cartItemCount = this.cartService.getItemCount();
         this.isAnyProductOutOfStock = this.cart.some(product=>product.isInStock===false);
-        console.log(this.cart)
       }
     );
   }
