@@ -1,50 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-/*FRAME
-Litening C:68X Monocoque Advanced Twin Mold Technology, Aero Headtube, Full Internal Cable Routing, Flat Mount Disc
-SIZE
-50, 52, 54, 56, 58, 60
-FORK
-Litening C:68X Aero, Integrated Cable Routing, Flat Mount Disc
-BRAKE SYSTEM
-Sram Red eTap AXS™ (160/160)
-REAR DERAILLEUR
-Sram Red eTap AXS™, 12-Speed
-FRONT DERAILLEUR
-Sram Red eTap AXS™
-SHIFT/ BRAKE LEVERS
-Sram Red eTap AXS™
-CRANKSET
-Sram Red Carbon, 48x35T
-CASSETTE
-Sram Red XG-1290, 10-33T
-CHAIN
-Sram Red D1
-WHEELSET
-Mavic Cosmic SLR 45 Carbon
-TYRES
-Schwalbe Pro One, Tubeless Easy, 28-622
-INTEGRATED BAR/ STEM
-ICR Aero Cockpit System, Integrated Cable Routing, Aero Spacer System, Garmin/Wahoo Mount Interface (50cm, 52cm: 400mm/90mm; 54cm, 56cm: 420mm/100mm; 58cm: 440mm/110mm; 60cm: 440mm/120mm)
-HANDLEBAR TAPE
-ACID Bartape RD
-SEAT POST
-Litening C:68X Aero, Comfort Flex
-SEATCLAMP
-CUBE Full Integrated Aero Clamp
-SADDLE
-Natural Fit Nuance SLT Road Carbon
-HEADSET
-ACROS, Top Integrated 1 1/8", Bottom Integrated 1 1/4"
-WEIGHT
-7,6 kg
-COLOUR
-liquidblue´n´carbon
-ART. NO
-579300
-PRICE
-2769990 HUF*/
+
 var products = [
 	{
 		id:1,
@@ -154,7 +111,7 @@ var products = [
 		brand: "Continental",
 		name: "Continental Grand Sport Race",
 		slug: "continental-grand-sport-race",
-		price: 14930,
+		price: 8230,
 		discountPercentage:0,
 		images: {
 			"default" : {
@@ -167,6 +124,11 @@ var products = [
 			"black" : {
 				"700x28c" : 11
 			}
+		},
+		features : {
+			punctureProtection : "Van",
+			tyreBeadType : "Drótperemes",
+			weight: "270g"
 		}
 	},
 	{
@@ -192,6 +154,9 @@ var products = [
 			"red" : {
 				"19" : 2
 			}
+		},
+		features : {
+			wheelSize : "29"
 		}
 	},
 	{
@@ -288,7 +253,58 @@ var products = [
 				"50" : 1,
 				"56" : 2
 			}
-		}
+		},		
+		features : {
+			frame : "Litening C:68X Monocoque Advanced Twin Mold Technology, Aero Headtube, Full Internal Cable Routing, Flat Mount Disc",
+			fork : "Litening C:68X Aero, Integrated Cable Routing, Flat Mount Disc",
+			rearDerailleur : "Sram Red eTap AXS™, 12-Speed",
+			frontDerailleur : "Sram Red eTap AXS™",
+			shiftAndBrakeLevers : "Sram Red eTap AXS™",
+			crankset : "Sram Red Carbon, 48x35T",
+			casette : "Sram Red XG-1290, 10-33T",
+			chain : "Sram Red D1",
+			wheelset : "Mavic Cosmic SLR 45 Carbon",
+			wheelSize : "28",
+			tyres : "Schwalbe Pro One, Tubeless Easy, 28-622",
+			headset : "ACROS, Top Integrated 1 1/8\", Bottom Integrated 1 1\/4\"",
+			saddle : "Natural Fit Nuance SLT Road Carbon",
+			weight : "7,6 kg"
+		},
+		reviews : [
+			{
+				id : "1",
+				userID : "user1",
+				description: "Remek bringa. Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, ullam asperiores debitis soluta suscipit nisi similique, beatae tempore, cupiditate, possimus dolorum quidem. Possimus labore nobis, tempore, sit facere omnis consectetur.",
+				rating: 5,
+				color: "blue",
+				size: "56",
+				upvotes : 1,
+				downvotes : 0,
+				createdAt: "2021-08-12"
+			},
+			{
+				id : "2",
+				userID : "user2",
+				description: "Lemértem és 7.6 helyett 7.7 kiló, ezért csak 3 csillag.",
+				rating: 3,
+				color: "blue",
+				size: "50",
+				upvotes : 0,
+				downvotes : 5,
+				createdAt: "2021-10-25"
+			},
+			{
+				id : "3",
+				userID : "user3",
+				description: "Eddig bevált. Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias, ullam asperiores debitis soluta suscipit nisi similique, beatae tempore, cupiditate, possimus dolorum quidem. Possimus labore nobis, tempore, sit facere omnis consectetur.",
+				rating: 5,
+				color: "blue",
+				size: "48",
+				upvotes : 1,
+				downvotes : 0,
+				createdAt: "2021-03-05"
+			}
+		]
 	},
 	{
 		id:11,
@@ -443,61 +459,139 @@ var products = [
 			}
 		}
 	},
+	{
+		id:15,
+		categories: ["accessories","pumps"],
+		brand: "Compass",
+		name: "Compass Super Pump",
+		slug: "compass-super-pump",
+		price: 6290,
+		discountPercentage:0,
+		images: {
+			"default" : {
+				"orange" : [
+					"compass-big-1.jpg",
+					"compass-big-2.jpg",
+					"compass-big-3.jpg",
+					"compass-big-4.jpg"
+				]
+			}
+		},
+		availableColors: ["orange"],
+		availableSizes : ["One size"],
+		productsInStock : {
+			"orange" : {
+				"One size" : 12
+			}
+		}
+	},
+	{
+		id:16,
+		categories: ["accessories","lights"],
+		brand: "Wheel Zone",
+		name: "Wheel Zone LED lights",
+		slug: "wheel-zone-led-lights",
+		price: 490,
+		discountPercentage:0,
+		images: {
+			"default" : {
+				"red" : [
+					"wheel_zone_lights_1.jpg",
+					"wheel_zone_lights_2.jpg"
+				],
+				"white" : [
+					"wheel_zone_lights_1.jpg",
+					"wheel_zone_lights_2.jpg"
+				]
+			}
+		},
+		availableColors: ["red","white"],
+		availableSizes : ["One size"],
+		productsInStock : {
+			"red" : {
+				"One size" : 5
+			},
+			"white" : {
+				"One size" : 5
+			}
+		}
+	},
+	{
+		id:17,
+		categories: ["parts","tires"],
+		brand: "Schwalbe",
+		name: "Schwalbe Space HS326 26X2,35 (60-559)",
+		slug: "schwalbe-space-hs326",
+		price: 7650,
+		discountPercentage:0,
+		images: {
+			"default" : {
+				"black" : ["schwalbe_space.jpg"]
+			}
+		},
+		availableColors: ["black"],
+		availableSizes : ["26X2,35"],
+		productsInStock : {
+			"black" : {
+				"26X2,35" : 3
+			}
+		},
+		features : {
+			punctureProtection : "Van",
+			tyreBeadType : "Drótperemes",
+			weight: "1060g"
+		}
+	}
 ];
 
+function parseQueryStringToObject(s){
+	const constructedObject={};
+	for(const [key,value] of new URLSearchParams(s).entries()) {
+	   constructedObject[key]=value;
+	}
+    return constructedObject;
+}
+
 router.get('/',(req,res)=>{
-	res.json(products);
-});
-
-router.get('/getProductsByName/:name',(req,res)=>{
-	let filteredProducts = products.filter(product=>product.name.toLowerCase().indexOf(req.params.name.toLowerCase())>=0);
-	if (filteredProducts.length>0){
-		res.json(filteredProducts);
-	} else {
-		res.sendStatus(404);
+	const { category,subcategory,name,slug,brands,price,sizes,wheelSizes,sort,limit,offset } = req.query;
+	let filteredProducts = [...products];
+	
+	if (category) {
+		filteredProducts = filteredProducts.filter(product=>product.categories.includes(category));
 	}
-})
 
-router.get('/getProductBySlug/:slug',(req,res)=>{
-	const product = products.find(product=>product.slug==req.params.slug);
-	if (product) {
-		res.json(product);
-	} else {
-		res.sendStatus(404);
+	if (subcategory) {
+		filteredProducts = filteredProducts.filter(product=>product.categories.includes(subcategory));
 	}
-});
 
-router.get('/getProductImages/:id/:type/:color',(req,res)=>{
-	fs.readdir(`./src/assets/images/products/${req.params.id}/${req.params.type}/${req.params.color}`,(err,files)=>{
-		if (files) {
-			sortedFiles=files.sort((a,b)=> a.localeCompare(b, "en", {numeric: true, ignorePunctuation: true}));
-			//sortedFiles = sortedFiles.map(el=>`${req.params.id}/360degree/${el}`);
-			res.json(sortedFiles);
-		} else {
-			res.sendStatus(404);
-		}
-	})
-});
-
-router.get('/getProduct360degreeImagesCount/:slug',(req,res)=>{
-	fs.readdir(`./src/assets/images/products/${req.params.id}/360degree`,(err,files)=>{
-		if (files) {
-			sortedFiles=files.sort((a,b)=> a.localeCompare(b, "en", {numeric: true, ignorePunctuation: true}));
-			sortedFiles = sortedFiles.map(el=>`${req.params.id}/360degree/${el}`);
-			res.json(sortedFiles);
-		} else {
-			res.sendStatus(404);
-		}
-	})
-});
-
-router.get('/getProductsByCategory',(req,res)=>{
-	if (req.query.category) {
-		res.json(products.filter(product=>product.categories.includes(req.query.category) 
-			&& (!req.query.subcategory || product.categories.includes(req.query.subcategory))));
-	} else {
-		res.sendStatus(404);
+	if (name) {
+		filteredProducts = filteredProducts.filter(product=>product.name.toLowerCase().indexOf(name.toLowerCase())>=0);
 	}
+
+	if (slug) {
+		filteredProducts = filteredProducts.find(product=>product.slug===slug);
+	}
+
+	if (brands) {
+		filteredProducts = filteredProducts.filter(product=>brands.includes(product.brand));
+	}
+
+	if (wheelSizes) {
+		filteredProducts = filteredProducts.filter(product=>product.features && product.features.wheelSize && wheelSizes.includes(product.features.wheelSize));
+	}
+
+	if (sizes) {
+		filteredProducts = filteredProducts.filter(product=>product.availableSizes.some(availableSize=>sizes.includes(availableSize)));
+	}
+
+	if (price) {
+		const priceObject = parseQueryStringToObject(price);
+		filteredProducts = filteredProducts.filter(product=>
+	      product.price>=priceObject.minPriceSetByUser && product.price<=priceObject.maxPriceSetByUser
+	    );
+	}
+
+	res.json(filteredProducts);
 });
 
 module.exports = router;
