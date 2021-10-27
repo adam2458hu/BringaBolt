@@ -32,7 +32,7 @@ export class SearchResultsComponent implements AfterViewInit {
   }
 
   search(){
-    this.productService.fetchProductsByName(this.searchBoxInput.nativeElement.value).subscribe(
+    this.productService.fetchProducts({name: this.searchBoxInput.nativeElement.value}).subscribe(
       (res:any)=>{
         this.searchResults = res;
       },
