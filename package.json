@@ -8,7 +8,7 @@
     "postinstall": "ng build",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
