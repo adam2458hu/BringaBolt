@@ -9,6 +9,7 @@
 	--progress-bar-current-offset: -99.9%;
 	--progress-bar-animation-duration: 500ms;
 	--slider-thumb-width: 20px;
+	--fractional-rating-percentage: 0%;
 }
 
 * {
@@ -22,7 +23,6 @@ html,body {
 body {
 	background: linear-gradient(white 70%,#111) no-repeat center center fixed;
 	font-family: 'Montserrat', sans-serif;
-	-webkit-filter: blur(0.000001px);
 	margin: 0;
 }
 
@@ -49,6 +49,10 @@ app-root {
 }
 
 app-cart-preview:hover #cart-preview{
+	display: block;
+}
+
+app-cart-item-list {
 	display: block;
 }
 
@@ -91,6 +95,10 @@ button {
 		&:active {
 			box-shadow: 0 1px 2px 0 rgba(0,0,0,0.4);
 			transform:  scale(0.95);
+		}
+
+		&.btn-black {
+			background-color: #333;
 		}
 
 		&.btn-yellow {
@@ -156,6 +164,11 @@ button {
 	margin-bottom:  20px;
 }
 
+.my-30 {
+	margin-top:  30px;
+	margin-bottom:  30px;
+}
+
 .mb-5 {
 	margin-bottom:  5px;
 }
@@ -182,6 +195,11 @@ button {
 
 .mr-5 {
 	margin-right: 5px;
+}
+
+.my-auto {
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 .mr-10 {
@@ -517,10 +535,10 @@ fa-icon {
 	img {
 		position: absolute;
 		object-fit: contain;
-		/*max-height: 100%;
-		max-width: 100%;
-		height: auto;
-		width: auto;*/
+		// max-height: 100%;
+		// max-width: 100%;
+		// height: auto;
+		// width: auto;
 		height: 100%;
 	} 
 
