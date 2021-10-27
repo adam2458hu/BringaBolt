@@ -15,81 +15,7 @@ import { faSort,faSortAmountDown, faSortAmountUp, faSortAlphaUp, faSortAlphaDown
 export class ProductListComponent implements OnInit {
   products: Product[];
   productsReceived: boolean=false;
-  filter: any={};
-  filters: any={
-    brands : [
-      {
-        value : 'Cube',
-        isChecked : false
-      },
-      {
-        value : 'Merida',
-        isChecked : false
-      },
-      {
-        value : 'Specialized',
-        isChecked : false
-      },
-      {
-        value : 'Moon',
-        isChecked : false
-    }],
-    wheelSizes : [
-      {
-        value : 28,
-        isChecked : false
-      },
-      {
-        value : 29,
-        isChecked : false
-    }],
-    frameSizes : [
-      {
-        value : '48',
-        isChecked : false
-      },
-      {
-        value : '50',
-        isChecked : false
-      },
-      {
-        value : '52',
-        isChecked : false
-      },
-      {
-        value : '54',
-        isChecked : false
-      },
-      {
-        value : '56',
-        isChecked : false
-      },
-      {
-        value : 'S',
-        isChecked : false
-      },
-      {
-        value : 'M',
-        isChecked : false
-      },
-      {
-        value : 'L',
-        isChecked : false
-    }],
-    colors : [
-      {
-        value : 'red',
-        isChecked : false
-      },
-      {
-        value : 'blue',
-        isChecked : false
-      },
-      {
-        value : 'green',
-        isChecked : false
-    }]
-  };
+  filters: any={};
   filterWindowIsOpened: boolean=false;
   orderWindowIsOpened: boolean=false;
   sortBy: any={
@@ -101,11 +27,9 @@ export class ProductListComponent implements OnInit {
   faSortAmountDown = faSortAmountDown;
   faSortAlphaUp = faSortAlphaUp;
   faSortAlphaDown = faSortAlphaDown;
+  somethingIsBeingDragged: boolean = false;
+  mouseDownTargetElement: any;
   sliderTrackWidth: number;
-  minPossiblePrice: number;
-  _minPriceSetByUser: number;
-  maxPossiblePrice: number;
-  _maxPriceSetByUser: number;
   priceHasChanged: BehaviorSubject<string> = new BehaviorSubject<string>('both');
   @ViewChild('slider1') slider1: ElementRef;
   @ViewChild('sliderTooltip1') sliderTooltip1: ElementRef;
@@ -119,13 +43,23 @@ export class ProductListComponent implements OnInit {
   @ViewChild('orderWindow') orderWindow: ElementRef;
   @ViewChild('orderButton') orderButton: ElementRef;
 
+  /* Erre azért van szükség, mert például Chrome böngésző alatt
+    ha a termék szűrő ablak nyitva van, és az ár input mezőben lévő értéket egérrel kijelölnénk úgy,
+    hogy az egérgomb felengedése már a szűrőket tartalmazó ablakon kívül esik, akkor bezárulna
+    az ablak. Ezért az ablak bezárásához azt figyeljük, hogy a kattintás kezdeti és végpontja is
+    a szűrő ablakon kívül legyen. */
+  @HostListener('window:mousedown',['$event'])
+  onMouseDown(event){
+    this.mouseDownTargetElement = event.target;
+  }
+
   @HostListener('window:click',['$event'])
   closeOpenedWindow(event){
-    if (this.filterWindowIsOpened && event.target!==this.filterButton.nativeElement && !this.filters2.nativeElement.contains(event.target)) {
-      this.closeFilterWindow();
+    if (this.filterWindowIsOpened && this.mouseDownTargetElement===event.target && event.target!==this.filterButton.nativeElement && !this.filters2.nativeElement.contains(event.target)) {
+      this.toggleFilterWindow();
     }
     if (this.orderWindowIsOpened && event.target!==this.orderButton.nativeElement && !this.orderWindow.nativeElement.contains(event.target)) {
-      this.orderWindowIsOpened=false;
+      this.toggleOrderWindow();
     }
   }
 
@@ -137,73 +71,103 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params=>{
-        //this.filter = {};
-        if (params['category']) this.filter.category = params['category'];
-        if (params['subcategory']) this.filter.subcategory = params['subcategory'];
+        this.filters = {};
+        if (params['category']) this.filters.category = params['category'];
+        if (params['subcategory']) this.filters.subcategory = params['subcategory'];
 
-        if (this.filter.category) {
-          this.productService.fetchProductsByCategory(this.filter).subscribe(
-            (products: Product[])=>{
-              this.handleProductsData(products);
-            },
-            (err)=>{
-              console.log(err);
-            }
-          )
-        } else {
-          this.productService.fetchProducts().subscribe(
-            (products: Product[])=>{
-              this.handleProductsData(products);
-            },
-            (err)=>{
-              console.log(err);
-            }
-          )
-        }
+        this.productService.fetchProducts(this.filters).subscribe(
+          (products: Product[])=>{
+            this.products=products;
+            this.productsReceived=true;
+            this.initializeFilters(this.filters);
+          },
+          (err)=>{
+            console.log(err);
+          }
+        )
       })
   }
 
-  onSubmit(form: NgForm){
-    this.filterWindowIsOpened=false;
-    console.log(form);
-  }
-
   get minPriceSetByUserPercentage(): number {
-    return this.minPriceSetByUser/this.maxPossiblePrice*100;
+    return (this.minPriceSetByUser-this.minPossiblePrice)/(this.maxPossiblePrice-this.minPossiblePrice)*100;
   }
 
   get maxPriceSetByUserPercentage(): number {
-    return this.maxPriceSetByUser/this.maxPossiblePrice*100;
+    return (this.maxPriceSetByUser-this.minPossiblePrice)/(this.maxPossiblePrice-this.minPossiblePrice)*100;
   }
 
   get minPriceSetByUser(): number {
-    return this._minPriceSetByUser;
+    return this.filters.price.minPriceSetByUser;
   }
 
   get maxPriceSetByUser(): number {
-    return this._maxPriceSetByUser;
+    return this.filters.price.maxPriceSetByUser;
+  }
+
+  get minPossiblePrice(): number {
+    return this.filters.price.minPossiblePrice;
+  }
+
+  get maxPossiblePrice(): number {
+    return this.filters.price.maxPossiblePrice;
   }
 
   set minPriceSetByUser(minPriceSetByUser: number) {
-    this._minPriceSetByUser = minPriceSetByUser;
+    this.filters.price.minPriceSetByUser = minPriceSetByUser;
     this.priceHasChanged.next('minPrice');
   }
 
   set maxPriceSetByUser(maxPriceSetByUser: number) {
-    this._maxPriceSetByUser = maxPriceSetByUser;
+    this.filters.price.maxPriceSetByUser = maxPriceSetByUser;
     this.priceHasChanged.next('maxPrice');
   }
 
-  handleProductsData(products: Product[]){
-    this.products=products;
-    this.productsReceived=true;
+  set minPossiblePrice(minPossiblePrice) {
+    this.filters.price.minPossiblePrice=minPossiblePrice;
+  }
+
+  set maxPossiblePrice(maxPossiblePrice) {
+    this.filters.price.maxPossiblePrice=maxPossiblePrice;
+  }
+
+  initializeFilters(filters){
+    this.filters = {
+      category : filters.category,
+      subcategory : filters.subcategory,
+      brands : [],
+      wheelSizes : [],
+      sizes : [],
+      colors : [],
+      price : {
+        minPriceSetByUser : 0,
+        maxPriceSetByUser : 0,
+        minPossiblePrice : 0,
+        maxPossiblePrice : 0
+      }
+    };
+
+    this.products.forEach(product=>{
+      if (!this.filters.brands.some(brand=>brand.value===product.brand)) {
+        this.filters.brands.push({value: product.brand, isChecked: false});
+      }
+
+      if (product.features && product.features.wheelSize && !this.filters.wheelSizes.some(wheelSize=>wheelSize.value===product.features.wheelSize)) {
+        this.filters.wheelSizes.push({value: product.features.wheelSize, isChecked: false});
+      }
+
+      product.availableSizes.forEach(availableSize=>{    
+        if (!this.filters.sizes.some(size=>size.value===availableSize)) {
+          this.filters.sizes.push({value: availableSize, isChecked: false});
+        }
+      })
+    })
+
     this.sortProducts('price',true);
     this.minPossiblePrice = this.products[0].price;
     this.minPriceSetByUser = this.minPossiblePrice;
     this.sortProducts('price',false);
     this.maxPossiblePrice = this.products[0].price;
     this.maxPriceSetByUser = this.maxPossiblePrice;
-    this.sortProducts('name',true);
     this.priceHasChanged.next('both');
   }
 
@@ -244,7 +208,7 @@ export class ProductListComponent implements OnInit {
             this.maxPriceSetByUser = value;
           }
         } else if (value<this.minPossiblePrice) {
-          /*ha mínisz az érték akkor a lehetséges legkisebb értékre állítjuk */
+          /*ha mínusz az érték akkor a lehetséges legkisebb értékre állítjuk */
           this.minPriceSetByUser = this.minPossiblePrice;
         } else {
           /*ha nagyobb a megadott min érték mint a lehetséges legnagyobb, akkor a
@@ -283,21 +247,15 @@ export class ProductListComponent implements OnInit {
     })
   }
 
-  openFilterWindow(){
-    this.filterWindowIsOpened=true;
-    this.initializeSlider();
+  toggleFilterWindow(){
+    this.filterWindowIsOpened = !this.filterWindowIsOpened;
+    if (this.filterWindowIsOpened) {
+      this.initializeSlider();
+    }
   }
 
-  closeFilterWindow(){
-    this.filterWindowIsOpened=false;
-  }
-
-  openOrderWindow(){
-    this.orderWindowIsOpened=true;
-  }
-
-  closeOrderWindow(){
-    this.orderWindowIsOpened=false;
+  toggleOrderWindow(){
+    this.orderWindowIsOpened=!this.orderWindowIsOpened;
   }
 
   onHandleMove(minHandle?: boolean){
@@ -306,13 +264,9 @@ export class ProductListComponent implements OnInit {
         this.minPriceSetByUser=this.maxPriceSetByUser;
         (<HTMLInputElement>this.slider1.nativeElement).value=this.minPriceSetByUser.toString();
       }
-      //this.repositionTooltipAndHandle(true);
-    } else {
-      if (this.maxPriceSetByUser<=this.minPriceSetByUser) {
-        this.maxPriceSetByUser=this.minPriceSetByUser;
-        (<HTMLInputElement>this.slider2.nativeElement).value=this.maxPriceSetByUser.toString();
-      }
-      //this.repositionTooltipAndHandle(false);
+    } else if (this.maxPriceSetByUser<=this.minPriceSetByUser) {
+      this.maxPriceSetByUser=this.minPriceSetByUser;
+      (<HTMLInputElement>this.slider2.nativeElement).value=this.maxPriceSetByUser.toString();
     }
   }
 
@@ -388,6 +342,40 @@ export class ProductListComponent implements OnInit {
     }
 
     return this.products;
+  }
+
+  onSubmit(form: NgForm){
+    this.filterWindowIsOpened=false;
+
+    let selectedFilters={
+      ...(this.filters.category && {category:this.filters.category}),
+      ...(this.filters.subcategory && {subcategory:this.filters.subcategory}),
+      price : new URLSearchParams(this.filters.price).toString()
+    };
+
+    Object.keys(this.filters).forEach(filterName=>{
+      if (this.filters[filterName] && this.filters[filterName].constructor === Array) {
+        this.filters[filterName].forEach(v=>{
+          if (v.isChecked) {
+            if (selectedFilters[filterName] && (selectedFilters[filterName].constructor === Array)) {
+              selectedFilters[filterName].push(v.value);
+            } else {
+              selectedFilters[filterName]=[v.value];
+            }
+          }
+        })
+      }
+    });
+
+    this.productService.fetchProducts(selectedFilters).subscribe(
+      (products: Product[])=>{
+        this.products=products;
+        this.productsReceived=true;
+      },
+      (err)=>{
+        console.log(err);
+      }
+    );
   }
 
 }

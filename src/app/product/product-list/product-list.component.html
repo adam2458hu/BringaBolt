@@ -2,9 +2,9 @@
 	<ng-container *ngIf="products && products.length>0;else noProductsInThisCategory" >
 		<div id="list-header" class="flex justify-content-between align-items-center">
 			<div id="filter-container" class="flex-33">
-				<button id="filter-button" #filterButton (click)="openFilterWindow()">Szűrők</button>
+				<button id="filter-button" #filterButton (click)="toggleFilterWindow()">Szűrők</button>
 				<form id="filters" #filterWindow #filterForm="ngForm" (ngSubmit)="onSubmit(filterForm)" [hidden]="!filterWindowIsOpened">
-					<span class="close" (click)="closeFilterWindow()">&times;</span>
+					<span class="close" (click)="toggleFilterWindow()">&times;</span>
 					<div class="filter">
 						<div class="filter-name">Márka</div>
 						<div *ngFor="let brand of filters.brands">
@@ -17,8 +17,6 @@
 						<div class="filter-name">Ár</div>
 						<div id="slider-container" #sliderContainer>
 							<div id="slider-track" #sliderTrack (click)="onSliderTrackClick($event)"></div>
-							<!-- <div id="slider-tooltip1" #sliderTooltip1>{{ minPriceSetByUser }} Ft</div>
-							<div id="slider-tooltip2" #sliderTooltip2>{{ maxPriceSetByUser }} Ft</div> -->
 							<div id="slider-tooltip1" class="slider-tooltip" #sliderTooltip1>{{ minPriceSetByUser }} Ft</div>
 							<div id="slider-tooltip2" class="slider-tooltip" #sliderTooltip2>{{ maxPriceSetByUser }} Ft</div>
 							<input type="range" id="slider1" #slider1 name="filter.minPriceSetByUser" [(ngModel)]="minPriceSetByUser" (ngModelChange)="onHandleMove(true)"  (mousedown)="bringSliderHandleForwardVisually(true)" min="{{ minPossiblePrice }}" max="{{ maxPossiblePrice }}">
@@ -27,17 +25,18 @@
 							<div id="max-label" #maxLabel class="slider-label">Max</div>
 						</div>
 						<div class="flex">
-							<div class="flex-50 flex align-items-center">
-								<div class="flex-30">Min:</div>
-								<div class="flex-70"><input type="text" id="minPriceSetByUser" class="p-5 w-100" name="filter.minPriceSetByUser" [ngModel]="minPriceSetByUser" (change)="checkForWrongPriceInput($event)" placeholder="Min"></div>
+							<div class="flex-40 flex align-items-center price-input-field-container">
+								<input type="text" id="minPriceSetByUser" class="price-input-field p-5 w-100" name="filter.minPriceSetByUser" [ngModel]="minPriceSetByUser" (change)="checkForWrongPriceInput($event)" placeholder="-tól">
+								<div class="flex align-items-center currency-label">Ft</div>
 							</div>
-							<div class="flex-50 flex align-items-center justify-content-end">
-								<div class="flex-30"> Max:</div>
-								<div class="flex-70"><input type="text" id="maxPriceSetByUser" class="p-5 w-100" name="filter.maxPriceSetByUser" [ngModel]="maxPriceSetByUser" (change)="checkForWrongPriceInput($event)" placeholder="Max"></div>
+							<div class="flex-20 dash"></div>
+							<div class="flex-40 flex align-items-center price-input-field-container">
+								<input type="text" id="maxPriceSetByUser" class="price-input-field p-5 w-100" name="filter.maxPriceSetByUser" [ngModel]="maxPriceSetByUser" (change)="checkForWrongPriceInput($event)" placeholder="-ig">
+								<div class="flex align-items-center currency-label">Ft</div>
 							</div>
 						</div>
 					</div>
-					<div class="filter">
+					<div *ngIf="filters.wheelSizes.length>0" class="filter">
 						<div class="filter-name">Kerékméret</div>
 						<div *ngFor="let wheelSize of filters.wheelSizes">
 							<label>
@@ -45,27 +44,26 @@
 							</label>
 						</div>
 					</div>
-					<div class="filter">
-						<div class="filter-name">Vázméret</div>
-						<div *ngFor="let frameSize of filters.frameSizes">
+					<div *ngIf="filters.sizes.length>0" class="filter">
+						<div class="filter-name">Méret</div>
+						<div *ngFor="let size of filters.sizes">
 							<label>
-								<input type="checkbox" [(ngModel)]="frameSize.isChecked" [ngModelOptions]="{standalone: true}" value="{{ frameSize.value }}">{{ frameSize.value }}
+								<input type="checkbox" [(ngModel)]="size.isChecked" [ngModelOptions]="{standalone: true}" value="{{ size.value }}">{{ size.value }}
 							</label>
 						</div>
 					</div>
 					<button class="btn btn-blue">Szűrés</button>
 				</form>
 			</div>
-			<div class="flex-33 text-center"><b>{{ products.length }} termék van ebben a kategóriában</b></div>
+			<div class="flex-33 text-center"><b>{{ products.length }} talált termék</b></div>
 			<div id="order-container" class="flex-33 flex justify-content-end align-items-center">
 				<span class="mr-5">Rendezés:</span>
 				<div class="position-relative">
-					<button id="order-button" #orderButton (click)="orderWindowIsOpened=!orderWindowIsOpened">
+					<button id="order-button" #orderButton (click)="toggleOrderWindow()">
 						<ng-container [ngSwitch]="sortBy.property">
 							<ng-container *ngSwitchCase="'name'">Név</ng-container>
 							<ng-container *ngSwitchCase="'price'">Ár</ng-container>
 							<ng-container *ngSwitchCase="'discountPercentage'">Kedvezmény</ng-container>
-								
 						</ng-container>
 						szerint
 						<ng-container [ngSwitch]="sortBy.ascending">
@@ -85,19 +83,18 @@
 			</div>
 		</div>
 		<div id="products" class="flex">
-			<div *ngFor="let product of products;index as i" class="card-container flex-33">
-				<a [routerLink]="[product | buildProductUrl]">
-					<div class="card-background"></div>
-					<div class="flex flex-column card text-center">
+			<div *ngFor="let product of products;index as i" class="flex-33">
+				<a [routerLink]="[product | buildProductUrl]" class="product-container">
+					<div class="product-background"></div>
+					<div class="flex flex-column product text-center">
 						<div class="product-header flex align-items-center">
-							<img *ngIf="product.images['360degree']" class="product-viewer-icon" src="{{ 'iconImagesPath' | env}}/360-degree-icon.jpg">
-							<span *ngIf="product.discountPercentage>0" class="discount-percentage">-{{ product.discountPercentage }}%<!-- {{ product.price | number | pointReplacer }} Ft --></span>
+							<img *ngIf="product.images['360degree']" class="product-image-viewer-360-button" src="{{ 'iconImagesPath' | env}}/360-degree-icon.jpg">
+							<span *ngIf="product.discountPercentage>0" class="discount-percentage">-{{ product.discountPercentage }}%</span>
 						</div>
 						<div class="product-body img-container align-items-end">
 							<img src="{{ product | getProductImages }}" alt="{{ product.name }}">
 						</div>
 						<div class="product-footer"><b>{{ product.name }}</b>
-							<!-- <span class="price">{{ product.price | number | pointReplacer }} Ft</span> -->
 						</div>
 						<div class="price flex justify-content-between">
 							<ng-container *ngIf="product.discountPercentage===0;else productIsOnSale">
@@ -106,7 +103,6 @@
 							<ng-template #productIsOnSale>
 								<div>
 									<span class="discounted-final-price">
-										<!-- Akciós ár: -->
 										{{ (product.price*(1-(product.discountPercentage/100))) | number: '1.0-0' | pointReplacer }} Ft
 									</span>
 									<span class="discounted-original-price">
