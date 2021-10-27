@@ -17,10 +17,28 @@ export class Product {
 		[color:string]: {
 			[size:number]:number
 		}
-	}
+	};
+	description: string;
+	features: {
+		[featureName:string]: string
+	};
+	reviews: {
+		id: string;
+		userID: string;
+		rating: number;
+		description: string;
+		color: string;
+		size: string;
+		upvotes: number;
+		downvotes: number;
+		createdAt: string;
+	}[];
 
 	constructor(product: Product){
-		this.id = product.id;
+		Object.keys(product).forEach(key=>{
+			this[key]=product[key];
+		})
+		/*this.id = product.id;
 		this.categories = product.categories;
 		this.brand = product.brand;
 		this.name = product.name;
@@ -31,6 +49,9 @@ export class Product {
 		this.availableColors = product.availableColors;
 		this.availableSizes = product.availableSizes;
 		this.productsInStock = product.productsInStock;
+		this.features = product.features;
+		this.description=product.description;
+		this.reviews = product.*/
 	}
 }
 
