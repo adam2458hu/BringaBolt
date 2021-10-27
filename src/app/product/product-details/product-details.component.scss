@@ -6,12 +6,12 @@
 	#product-background {
 		position: absolute;
 		top: -3px;
-		left: -3px;
+		left: 0;
 		background-image: linear-gradient(to right,#eee,$color-light-blue,#ddd);
 		box-shadow: 0 5px 5px rgba(0,0,0,0.4);
 		border-radius: 10px;
-		width: calc(100% + 6px);
 		height: calc(100% + 6px);
+		width: 100%;
 		z-index: -1;
 	}
 
@@ -20,7 +20,29 @@
 		background-color: white;
 		border-radius: 10px;
 		padding: 10px 10px 10px 30px;
+		width: calc(100% - 6px);
+		margin: auto;
 		z-index: 100;
+
+		#product-image-viewer-360-button {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			width: 60px;
+			height: 40px;
+			background-color: white;
+			padding: 5px;
+			z-index: 1;
+
+			img {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%,-50%);
+				width: 50px;
+				height: auto;
+			}
+		}
 
 		#product-image-container {
 			position: relative;
@@ -28,20 +50,6 @@
 
 		#product-image:hover {
 			cursor: zoom-in;
-		}
-
-		#product-image-viewer-360-button {
-			position: absolute;
-			top: 0;
-			left: 0;
-			background-color: white;
-			padding: 5px;
-			z-index: 1;
-
-			img {
-				width: 60px;
-				height: auto;
-			}
 		}
 
 		#product-details {
@@ -96,12 +104,12 @@
 				}
 			}
 
-			#availability {
-				color:  $color-red;
+			.available {
+				color: $color-green;
+			}
 
-				&.available {
-					color:  #4caf50;
-				}
+			.unavailable {
+				color: $color-red;
 			}
 
 			#add-to-cart-block {
@@ -117,6 +125,191 @@
 					color:  white;
 					font-size:  18px;
 					font-weight: bold;
+				}
+			}
+		}
+	}
+}
+
+#accordions {
+	margin-top: 50px;
+
+	.accordion {
+		background-color: white;
+
+		&:not(:last-child) {
+			margin-bottom: 40px;
+		}
+
+		h2 {
+			font-size: 30px;
+		}
+
+		.accordion-button {
+			background-color: #111;
+			color: white;
+			font-size: 40px;
+			padding: 10px 20px;
+			text-align: center;
+			width: 100%;
+		}
+
+		.accordion-body {
+			padding: 20px;
+			border: 1px solid #ddd;
+
+			table {
+				background-color: white;
+				border-collapse: collapse;
+				width: 100%;
+
+				tr {
+					td,th {
+						border: 1px solid #777;
+						padding: 5px 10px;
+					}
+				}
+			}
+
+			fa-icon {
+				color: black;
+
+				&.star {
+					color: #ddd;
+
+					&.active {
+						color: $color-blue;
+					}
+				}
+			}
+
+			#user-rating-statistics {
+				//padding-bottom: 20px;
+				//border-bottom: 2px solid #333;
+
+				#overall-rating {
+					font-size: 30px;
+
+					fa-icon ::ng-deep .gradient-background{
+						background: linear-gradient(to right,$color-blue 0 var(--fractional-rating-percentage),#ddd var(--fractional-rating-percentage) 100%);
+						color: white;
+					}
+				}
+
+				table {
+					width: 100%;
+					
+					tr,td {
+						border: none;
+					}
+
+					td {
+						white-space: nowrap;
+						padding: 5px 0;
+					}
+
+					td:nth-child(2){
+						padding: 5px;
+						width: 100%;
+					}
+				}
+
+				.user-rating-bars:not(:last-child) {
+					margin-bottom: 5px;
+				}
+
+				.bar {
+					height: 20px;
+					//margin: 0 10px;
+				}
+
+				button {
+					margin-bottom: 0;
+
+					fa-icon {
+						color: white;
+					}
+				}
+			}
+
+			#reviews {
+				border-top: 2px solid #333;
+				padding-top: 20px;
+			}
+
+			#order-container {
+				position: relative;
+
+				button {
+					border: 1px solid #777;
+					color: #333;
+					padding: 5px;
+					font-size: 18px;
+				}
+
+				#order-options {
+					position: absolute;
+					width: 100%;
+					opacity: 0;
+					z-index: 999;
+					transform-origin: top;
+					transform: scaleY(0);
+
+					&.slideIn {
+						animation: scaleVertically 0.2s linear forwards, fadeIn 0.2s linear forwards;
+					}
+
+					> div {
+						background-color: white;
+						border: 1px solid #777;
+						border-top: none;
+						cursor: pointer;
+						text-align: center;
+						font-size: 14px;
+						padding: 5px;
+						width: 100%;
+
+						&:hover {
+							background-color: #ddd;
+						}
+					}
+				}
+			}
+
+			.review-container {
+				max-width: 50%;
+
+				&:nth-child(odd) {
+					padding-right: 30px;
+				}
+
+				&:nth-child(even) {
+					padding-left: 30px;
+				}
+
+				.review {
+					border-bottom: 1px solid #777;
+					height: 100%;
+					padding: 10px 0;
+
+					.helpful {
+						margin-top: auto;
+
+						button {
+							padding: 5px;
+							border-radius: 5px;
+
+							fa-icon {
+								&.upvote {
+									color: $color-green;
+								}
+
+								&.downvote {
+									color: $color-red;
+								}
+							}
+						}
+					}
 				}
 			}
 		}

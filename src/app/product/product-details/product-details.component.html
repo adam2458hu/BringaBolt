@@ -1,79 +1,199 @@
-<div *ngIf="productDetailsReceived" id="product-container">
-	<div id="product-background"></div>
-	<div id="product" class="flex justify-content-between">
-		<!-- <button *ngIf="product.images['360degree'] && product.images['360degree'][product.selectedColor]" id="product-image-viewer-360-icon" class="btn">
-			<img src="{{ 'iconImagesPath' | env }}/360-degree-icon.jpg" alt="360 degree product viewer" (click)="openProductImageViewer('360degree')">
-		</button> -->
-		<div id="product-image-container" class="flex flex-50 img-container align-items-center justify-content-center">
-			<button *ngIf="product.images['360degree'] && product.images['360degree'][product.selectedColor]" id="product-image-viewer-360-button" class="btn">
-				<img src="{{ 'iconImagesPath' | env }}/360-degree-icon.jpg" id="product-image-viewer-360-icon" alt="360 degree product viewer" (click)="openProductImageViewer('360degree')">
+<div *ngIf="productDetailsReceived">
+	<div id="product-container">
+		<div id="product-background"></div>
+		<div id="product" class="flex justify-content-between">
+			<button *ngIf="product.images['360degree'] && product.images['360degree'][product.selectedColor]" id="product-image-viewer-360-button" class="btn" (click)="openProductImageViewer('360degree')">
+				<img src="{{ 'iconImagesPath' | env }}/360-degree-icon.jpg" id="product-image-viewer-360-icon" alt="360 degree product viewer">
 			</button>
-			<img id="product-image" src="{{ product | getProductImages: product.selectedColor }}" alt="{{ product.name }}" width="100%" (click)="openProductImageViewer('default')">
-		</div>
-		<div id="product-details" class="flex-50 align-items-center">
-			<div>
-				<div id="product-name" class="name">{{ product.name }}</div>
-				<div id="product-price" class="price">
-					<ng-container *ngIf="product.discountPercentage===0;else productIsOnSale">
-						<div>{{ product.price | number | pointReplacer }} Ft</div>
-					</ng-container>
-					<ng-template #productIsOnSale>
-						<div>
-							<span class="discounted-final-price">
-								{{ (product.price*(1-(product.discountPercentage/100))) | number: '1.0-0' | pointReplacer }} Ft
-							</span>
-							<span class="discounted-original-price">
-								{{ product.price | number: '1.0-0' | pointReplacer }} Ft
-							</span>
-						</div>
-					</ng-template>
-					<!-- {{ product.price | number | pointReplacer }} Ft -->
-				</div>
+			<div id="product-image-container" class="flex flex-50 img-container align-items-center justify-content-center">
+				<img id="product-image" src="{{ product | getProductImages: product.selectedColor }}" alt="{{ product.name }}" width="100%" (click)="openProductImageViewer('default')">
 			</div>
-			<div>
-				<div><fa-icon [fixedWidth]="true" [icon]="faTruck"></fa-icon>
-					<ng-container *ngIf="product.categories.includes('bikes');else shippingFee">Ingyenes szállítás
-					</ng-container>
-					<ng-template #shippingFee>Szállítási díj: 990 Ft</ng-template>
-				</div>
-				<div *ngIf="product.categories.includes('bikes')"><fa-icon [fixedWidth]="true" [icon]="faWrench"></fa-icon>Díjmentes üzembe helyezés</div>
-				<div><fa-icon [fixedWidth]="true" [icon]="faMoneyBillWave"></fa-icon>Pénzvisszafizetési garancia</div>
-			</div>
-			<div>
-				<div><b>Szín:</b></div>
-				<div id="colors" class="flex">
-					<div *ngFor="let color of product.availableColors" class="circle" [ngClass]="{'active':product.selectedColor==color}" [ngStyle]="{backgroundColor: color}" (click)="selectColor(color)" title="{{ color }}"></div>
-				</div>
-			</div>
-			<div>
-				<div><b>Méret:</b></div>
-				<div id="sizes" class="flex">
-					<div *ngFor="let size of product.availableSizes" class="rectangle" [ngClass]="{'active':product.selectedSize==size,'sold-out':!product.productsInStock || !product.productsInStock[product.selectedColor] || !product.productsInStock[product.selectedColor][size]}" (click)="selectSize(size)">{{ size }}
+			<div id="product-details" class="flex-50 align-items-center">
+				<div>
+					<div id="product-name" class="name"><b>{{ product.name }}</b></div>
+					<div id="product-price" class="price">
+						<ng-container *ngIf="product.discountPercentage===0;else productIsOnSale">
+							<div>{{ product.price | number | pointReplacer }} Ft</div>
+						</ng-container>
+						<ng-template #productIsOnSale>
+							<div>
+								<span class="discounted-final-price">
+									{{ (product.price*(1-(product.discountPercentage/100))) | number: '1.0-0' | pointReplacer }} Ft
+								</span>
+								<span class="discounted-original-price">
+									{{ product.price | number: '1.0-0' | pointReplacer }} Ft
+								</span>
+							</div>
+						</ng-template>
+						<!-- {{ product.price | number | pointReplacer }} Ft -->
 					</div>
 				</div>
-			</div>
-			<div>
-				<b>Elérhetőség: 
-					<span id="availability" [ngClass]="{'available':product.stockQuantity>0}">
-						<span *ngIf="product.stockQuantity>0;else notInStock">
+				<div>
+					<div><fa-icon [fixedWidth]="true" [icon]="faTruck"></fa-icon>
+						<ng-container *ngIf="product.categories.includes('bikes');else shippingFee">Ingyenes szállítás
+						</ng-container>
+						<ng-template #shippingFee>Szállítási díj: 990 Ft</ng-template>
+					</div>
+					<div *ngIf="product.categories.includes('bikes')"><fa-icon [fixedWidth]="true" [icon]="faWrench"></fa-icon>Díjmentes üzembe helyezés</div>
+					<div><fa-icon [fixedWidth]="true" [icon]="faMoneyBillWave"></fa-icon>Pénzvisszafizetési garancia</div>
+				</div>
+				<div>
+					<div><b>Szín:</b></div>
+					<div id="colors" class="flex">
+						<div *ngFor="let color of product.availableColors" class="circle" [ngClass]="{'active':product.selectedColor==color}" [ngStyle]="{backgroundColor: color}" (click)="selectColor(color)" title="{{ color }}"></div>
+					</div>
+				</div>
+				<div>
+					<div><b>Méret:</b></div>
+					<div id="sizes" class="flex">
+						<div *ngFor="let size of product.availableSizes" class="rectangle" [ngClass]="{'active':product.selectedSize==size,'sold-out':!product.productsInStock || !product.productsInStock[product.selectedColor] || !product.productsInStock[product.selectedColor][size]}" (click)="selectSize(size)">{{ size }}
+						</div>
+					</div>
+				</div>
+				<div>
+					<b>Elérhetőség: 
+						<span *ngIf="product.stockQuantity>0;else notInStock" class="available">
 							Raktáron {{ product.stockQuantity }} db
 						</span>
 						<ng-template #notInStock>
-							Nincs készleten
+							<span class="unavailable">Nincs készleten</span>
 						</ng-template>
-					</span>
-				</b>
+					</b>
+				</div>
+				<div id="add-to-cart-block" class="input-with-button-container" #addToCartBlock>
+					<input #orderQuantity type="number" value="1" min="1" (change)="selectQuantity()" (keyup.enter)="addToCart()">
+					<button (click)="addToCart()" class="btn btn-purple" (mousedown)="shrinkAddToCartBlock(true)" (mouseup)="shrinkAddToCartBlock(false)" (mouseleave)="shrinkAddToCartBlock(false)">
+						<span *ngIf="product.stockQuantity>0;else preOrder">
+							Kosárba
+						</span>
+						<ng-template #preOrder>
+							Előrendelés
+						</ng-template>
+					</button>
+				</div>
 			</div>
-			<div id="add-to-cart-block" class="input-with-button-container" #addToCartBlock>
-				<input #orderQuantity type="number" value="1" min="1" (change)="selectQuantity()" (keyup.enter)="addToCart()">
-				<button (click)="addToCart()" class="btn btn-purple" (mousedown)="shrinkAddToCartBlock(true)" (mouseup)="shrinkAddToCartBlock(false)" (mouseleave)="shrinkAddToCartBlock(false)">
-					<span *ngIf="product.stockQuantity>0;else preOrder">
-						Kosárba
-					</span>
-					<ng-template #preOrder>
-						Előrendelés
-					</ng-template>
-				</button>
+		</div>
+	</div>
+	<!-- <div *ngIf="product.description || product.features || product.reviews" id="accordions"> -->
+	<div id="accordions">
+		<div *ngIf="product.description" class="accordion">
+			<button class="accordion-button"><h2>Leírás</h2></button>
+			<div class="accordion-body">
+				{{ product.description }}
+			</div>
+		</div>
+		<div *ngIf="product.features" class="accordion">
+			<button class="accordion-button"><h2>Jellemzők</h2></button>
+			<div class="accordion-body">
+				<table>
+					<tr *ngFor="let feature of product.features | keyvalue">
+						<th>{{ productFeatureNames[feature.key] }}</th>
+						<td>{{ feature.value }}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="accordion">
+			<button class="accordion-button"><h2>Vélemények</h2></button>
+			<div class="accordion-body">
+				<div id="user-rating-statistics" class="flex">
+					<div class="flex-60">
+						<table>
+							<tr *ngFor="let rowIndex of [5,4,3,2,1]" class="user-rating-bars">
+								<td>
+									<fa-icon *ngFor="let number of [1,2,3,4,5]" [icon]="faStar" class="star" [ngClass]="{'active':number<=rowIndex}"></fa-icon>
+								</td>
+								<td>
+									<div class="bar" [ngStyle]="{'background-image': product.reviews?
+									'linear-gradient(to right,#38A9E4 0% '+getRatingCount(rowIndex)/product.reviews.length*100+'%,#ddd  '+getRatingCount(rowIndex)/product.reviews.length*100+'% 100%)':
+									'linear-gradient(to right,#ddd,#ddd)'}"></div>
+								</td>
+								<td>
+									<div class="text-center">({{ getRatingCount(rowIndex) }})</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="flex-40 flex flex-column justify-content-center align-items-center text-center px-10">
+						<ng-container *ngIf="product.reviews;else notYetRated">
+							<h3>Összesített értékelés: {{ getOverallRating(false) }}</h3>
+							<div id="overall-rating">
+								<ng-container *ngFor="let number of [1,2,3,4,5]">
+									<ng-container *ngIf="number<=getOverallRating(true);else second">
+										<fa-icon [icon]="faStar" class="star" [ngClass]="{'active':number<=(getOverallRating(true)+1)}"></fa-icon>
+									</ng-container>
+									<ng-template #second>
+										<ng-container *ngIf="((number-getOverallRating(false))>0) && ((number-getOverallRating(false))<1);else third">
+											<fa-icon [icon]="faStar" class="star" [mask]="faSquareFull" [classes]="['gradient-background']" [ngClass]="{'active':number<=(getOverallRating(true)+1)}"></fa-icon>
+										</ng-container>
+									</ng-template> 
+									<ng-template #third>
+										<fa-icon [icon]="faStar" class="star"></fa-icon>
+									</ng-template>
+								</ng-container>
+							</div>
+							<div>{{ product.reviews.length }} vélemény alapján</div>
+						</ng-container>
+						<ng-template #notYetRated>
+							Még nem érkezett értékelés.
+						</ng-template>
+						<button class="btn btn-black my-10">Vélemény írása<fa-icon [icon]="faPencilAlt" class="ml-5"></fa-icon></button>
+					</div>
+				</div>
+				<ng-container *ngIf="product.reviews">
+					<div id="reviews" class="flex justify-content-between align-items-center my-20">
+						<div>
+							<button>Szűrők</button>
+						</div>
+						<div class="flex justify-content-end align-items-center">
+							<span class="mr-10"><b>Rendezés:</b></span> 
+							<div id="order-container">
+								<button #orderButton (click)="toggleOrderWindow()">
+									<ng-container [ngSwitch]="sortBy.property">
+										<ng-container *ngSwitchCase="'createdAt'">Legfrissebb</ng-container>
+										<ng-container *ngSwitchCase="'rating'">Legjobb</ng-container>
+										<ng-container *ngSwitchCase="'upvotes'">Leghasznosabb</ng-container>
+									</ng-container>
+									<ng-container> értékelések</ng-container>
+								</button>
+								<div id="order-options" #orderWindow [ngClass]="{'slideIn':orderWindowIsOpened}">
+									<div (click)="sortArrayOfObjects(sortedReviews,'createdAt',false)">Legfrissebb értékelések</div>
+									<div (click)="sortArrayOfObjects(sortedReviews,'createdAt',true)">Legrégebbi értékelések</div>
+									<div (click)="sortArrayOfObjects(sortedReviews,'rating',false)">Legjobb értékelések</div>
+									<div (click)="sortArrayOfObjects(sortedReviews,'rating',true)">Legrosszabb értékelések</div>
+									<div (click)="sortArrayOfObjects(sortedReviews,'upvotes',false)">Leghasznosabb értékelések</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex">
+						<div *ngFor="let review of sortedReviews" class="flex-50 review-container">
+							<div class="review flex flex-column">
+								<div>
+									<fa-icon *ngFor="let number of [1,2,3,4,5]" [icon]="faStar" class="star" [ngClass]="{'active':number<=review.rating}"></fa-icon>
+									<span class="mx-10">|</span>
+									<span><b><fa-icon [icon]="faUser" class="mr-5"></fa-icon>{{ review.userID }}</b></span>
+									<span class="mx-10">|</span>
+									<span class="createdAt"><fa-icon [icon]="faCalendarAlt" class="mr-5"></fa-icon>{{ review.createdAt }}</span>
+								</div>
+								<div class="mt-5 mb-20 fs-14">
+									<span class="mr-10"><b>Szín:</b> {{ review.color }}</span>
+									<span><b>Méret:</b> {{ review.size }}</span>
+								</div>
+								<div class="description mb-20">{{ review.description }}</div>
+								<div class="helpful flex align-items-center ">
+									<div>Hasznos volt Önnek ez a vélemény?</div>
+									<button (click)="rateReview(review.id,true)" class="btn btn-black ml-5">
+										<fa-icon [icon]="faThumbsUp" class="upvote mr-5"></fa-icon>Igen ({{ review.upvotes }})
+									</button>
+									<button (click)="rateReview(review.id,false)" class="btn btn-black ml-5">
+										<fa-icon [icon]="faThumbsDown" class="downvote mr-5"></fa-icon>Nem ({{review.downvotes}})
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
 			</div>
 		</div>
 	</div>
